@@ -1,5 +1,5 @@
 import { Ingredient, Service, FAQItem } from './types';
-import { Truck, Utensils, CalendarHeart, Leaf, Star, Sparkles, Box, ChefHat } from 'lucide-react';
+import { Truck, Utensils, CalendarHeart, Leaf, Star, Sparkles } from 'lucide-react';
 
 export const INGREDIENTS: Ingredient[] = [
   // Fruits
@@ -27,24 +27,24 @@ export const INGREDIENTS: Ingredient[] = [
 export const SERVICES: Service[] = [
   {
     id: 'daily',
-    title: 'Daily Serving',
-    description: 'A hassle-free morning ritual for consistent health.',
+    title: 'Daily Subscription',
+    description: 'Fresh bowls delivered to your office or home every morning. Start your day with vibrant energy.',
     icon: 'calendar',
     cta: 'Subscribe Now'
   },
   {
     id: 'bulk',
     title: 'Bulk Orders',
-    description: 'Energize your team or guests with premium bowls.',
-    icon: 'box',
-    cta: 'Get Quote'
+    description: 'Organizing a team lunch or wellness event? Get premium custom bowls at special bulk rates.',
+    icon: 'truck',
+    cta: 'Get Quote via WhatsApp'
   },
   {
     id: 'catering',
-    title: 'Catering',
-    description: 'Live fruit stations that steal the show.',
-    icon: 'chef',
-    cta: 'Book Event'
+    title: 'Premium Catering',
+    description: 'Elevate your weddings and corporate events with our live fruit stations and exotic displays.',
+    icon: 'utensils',
+    cta: 'Book Event via WhatsApp'
   }
 ];
 

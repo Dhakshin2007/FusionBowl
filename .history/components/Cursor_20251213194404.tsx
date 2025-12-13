@@ -92,17 +92,17 @@ const Cursor: React.FC = () => {
         }}
       >
         <motion.div 
-            className="rounded-full blur-2xl transition-colors duration-300"
+            className="rounded-full blur-3xl transition-colors duration-300"
             animate={{
-              width: isHovering ? 250 : 150,
-              height: isHovering ? 250 : 150,
+              width: isHovering ? 500 : 400,
+              height: isHovering ? 500 : 400,
             }}
             style={{
                 // Using a radial gradient to simulate the spotlight/lantern effect
                 // Brand Orange: #FF8C42 -> rgb(255, 140, 66)
                 background: isHovering 
-                  ? 'radial-gradient(circle, rgba(136, 212, 152, 0.15) 0%, rgba(136, 212, 152, 0.05) 50%, transparent 70%)' // Greenish on hover
-                  : 'radial-gradient(circle, rgba(255, 140, 66, 0.15) 0%, rgba(255, 140, 66, 0.05) 50%, transparent 70%)' // Orange default
+                  ? 'radial-gradient(circle, rgba(136, 212, 152, 0.25) 0%, rgba(136, 212, 152, 0.05) 50%, transparent 70%)' // Greenish on hover
+                  : 'radial-gradient(circle, rgba(255, 140, 66, 0.25) 0%, rgba(255, 140, 66, 0.05) 50%, transparent 70%)' // Orange default
             }}
         />
       </motion.div>

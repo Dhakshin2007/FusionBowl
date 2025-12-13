@@ -8,7 +8,7 @@ import LegalModal, { LegalDocType } from './components/LegalModal';
 import CookieBanner from './components/CookieBanner';
 import FAQ from './components/FAQ';
 import Cursor from './components/Cursor';
-import FloatingWhatsApp from './components/FloatingWhatsapp';
+import FloatingWhatsApp from './components/FloatingWhatsApp.tsx';
 import { SERVICES, TESTIMONIALS } from './constants';
 import { SectionId } from './types';
 import Button from './components/Button';
