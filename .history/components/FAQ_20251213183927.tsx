@@ -14,27 +14,17 @@ const FAQ: React.FC = () => {
   return (
     <section id={SectionId.FAQ} className="py-24 bg-brand-cream dark:bg-neutral-900 transition-colors duration-300">
       <div className="container mx-auto px-6 max-w-4xl">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <span className="text-brand-orange font-semibold tracking-wider uppercase text-sm flex items-center justify-center gap-2">
             <HelpCircle size={16} /> Got Questions?
           </span>
           <h2 className="text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream mt-2">Frequently Asked Questions</h2>
-        </motion.div>
+        </div>
 
         <div className="space-y-4">
           {FAQ_DATA.map((item, index) => (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
+            <div 
+              key={index} 
               className="bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-neutral-700 shadow-sm hover:shadow-md transition-all"
             >
               <button
@@ -61,7 +51,7 @@ const FAQ: React.FC = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

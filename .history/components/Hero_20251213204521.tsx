@@ -80,25 +80,6 @@ const Hero: React.FC = () => {
 
         {/* Visual Content (Mock 3D Parallax) */}
         <div className="relative h-[500px] w-full flex items-center justify-center">
-            
-            {/* ROTATING TEXT RING */}
-            <motion.div
-                className="absolute z-0 w-[350px] h-[350px] md:w-[580px] md:h-[580px] flex items-center justify-center pointer-events-none opacity-20 dark:opacity-30"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-            >
-                <svg viewBox="0 0 200 200" className="w-full h-full overflow-visible">
-                    <defs>
-                    <path id="textCircle" d="M 100, 100 m -85, 0 a 85,85 0 1,1 170,0 a 85,85 0 1,1 -170,0" />
-                    </defs>
-                    <text className="font-serif font-bold uppercase tracking-[0.25em] fill-current text-brand-dark dark:text-brand-cream text-[13px]">
-                    <textPath href="#textCircle" startOffset="0%">
-                        Fusion Bowl • Pure Freshness  • Pure Royal Love • 
-                    </textPath>
-                    </text>
-                </svg>
-            </motion.div>
-
             {/* The "Bowl" Circle */}
             <motion.div 
               className="w-[300px] h-[300px] md:w-[450px] md:h-[450px] bg-white dark:bg-neutral-800 rounded-full shadow-2xl shadow-orange-500/10 flex items-center justify-center relative z-10 border border-orange-50 dark:border-neutral-700 transition-colors duration-300"

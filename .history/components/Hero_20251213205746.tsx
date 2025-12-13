@@ -93,7 +93,7 @@ const Hero: React.FC = () => {
                     </defs>
                     <text className="font-serif font-bold uppercase tracking-[0.25em] fill-current text-brand-dark dark:text-brand-cream text-[13px]">
                     <textPath href="#textCircle" startOffset="0%">
-                        Fusion Bowl • Pure Freshness  • Pure Royal Love • 
+                        Fusion Bowl • Pure Freshness  • Pure Royalty • 
                     </textPath>
                     </text>
                 </svg>
