@@ -50,19 +50,19 @@ export const SERVICES: Service[] = [
 
 export const TESTIMONIALS = [
   {
-    name: "Manikanta",
-    role: "Charted Accountant",
+    name: "Sarah Jenkins",
+    role: "Yoga Instructor",
     text: "I've never tasted freshness like this. The ability to customize my post-workout meal is a game changer.",
     rating: 5
   },
   {
-    name: "RamaMohanRao Kotha",
-    role: "High Court Advocate",
+    name: "RamaMohanR",
+    role: "Corporate Lead",
     text: "Fusion Bowl transformed our office lunches. The team is healthier, happier, and more productive.",
     rating: 5
   },
   {
-    name: "Dhakshin",
+    name: "Priya Sharma",
     role: "Student",
     text: "Finally, a healthy option that isn't boring. The student discount for subscriptions is a lifesaver!",
     rating: 4

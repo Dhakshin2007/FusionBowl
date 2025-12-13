@@ -62,7 +62,7 @@ export const TESTIMONIALS = [
     rating: 5
   },
   {
-    name: "Dhakshin",
+    name: "Priya Sharma",
     role: "Student",
     text: "Finally, a healthy option that isn't boring. The student discount for subscriptions is a lifesaver!",
     rating: 4

@@ -51,7 +51,7 @@ export const SERVICES: Service[] = [
 export const TESTIMONIALS = [
   {
     name: "Manikanta",
-    role: "Charted Accountant",
+    role: "CA ",
     text: "I've never tasted freshness like this. The ability to customize my post-workout meal is a game changer.",
     rating: 5
   },
@@ -62,7 +62,7 @@ export const TESTIMONIALS = [
     rating: 5
   },
   {
-    name: "Dhakshin",
+    name: "Priya Sharma",
     role: "Student",
     text: "Finally, a healthy option that isn't boring. The student discount for subscriptions is a lifesaver!",
     rating: 4
