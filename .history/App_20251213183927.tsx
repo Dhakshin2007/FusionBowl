@@ -7,7 +7,6 @@ import SubscriptionModal from './components/SubscriptionModal';
 import LegalModal, { LegalDocType } from './components/LegalModal';
 import CookieBanner from './components/CookieBanner';
 import FAQ from './components/FAQ';
-import Cursor from './components/Cursor';
 import { SERVICES, TESTIMONIALS } from './constants';
 import { SectionId } from './types';
 import Button from './components/Button';
@@ -30,7 +29,6 @@ const App: React.FC = () => {
 
   return (
     <div className="font-sans text-gray-800 dark:text-gray-200 transition-colors duration-300">
-      <Cursor />
       <Navbar />
       
       <main>
