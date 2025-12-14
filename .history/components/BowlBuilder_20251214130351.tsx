@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, RefreshCw, Wand2, Send, Sparkles, MapPin, Trash2, ShoppingBag, Utensils, GlassWater, Circle, X, Edit3, Wind, Droplets } from 'lucide-react';
@@ -28,15 +27,6 @@ const CONTAINER_CONFIG: Record<ContainerType, { label: string; icon: React.React
     color: 'bg-green-500',
     sizeOptions: ['Lite', 'Crunch', 'Platter']
   },
-};
-
-const CATEGORY_LABELS: Record<string, string> = {
-  'fruit': 'Fresh Fruits',
-  'vegetable': 'Fresh Vegetables',
-  'shake-item': 'Cold Pressed Juices',
-  'base': 'Base',
-  'topping': 'Toppings',
-  'dressing': 'Dressings'
 };
 
 const BowlBuilder: React.FC = () => {
@@ -88,19 +78,7 @@ const BowlBuilder: React.FC = () => {
     localStorage.setItem('fusionBowl_config', JSON.stringify(config));
   }, [activeContainers, orders, sizes]);
 
-  // Determine allowed categories based on view
-  const getCategoriesForView = (view: ContainerType): string[] => {
-      switch(view) {
-          case 'bowl': return ['fruit', 'topping', 'base'];
-          case 'shake': return ['shake-item'];
-          case 'plate': return ['vegetable', 'fruit', 'topping', 'dressing'];
-          default: return [];
-      }
-  };
-
-  const allowedCategories = getCategoriesForView(currentView);
-  const filteredIngredients = INGREDIENTS.filter(i => allowedCategories.includes(i.category));
-  const categoriesToDisplay = Array.from(new Set(filteredIngredients.map(i => i.category)));
+  const categories = Array.from(new Set(INGREDIENTS.map(i => i.category)));
 
   // Helpers for current view
   const currentIngredients = orders[currentView];
@@ -173,6 +151,9 @@ const BowlBuilder: React.FC = () => {
     setSizes(prev => ({ ...prev, [type]: null }));
     setAiAnalysis('');
     
+    // If clearing the view we are looking at, just clear data.
+    // If it was the only container, keep it active.
+    // If there are others, remove it from activeContainers.
     if (activeContainers.length > 1) {
         const newActive = activeContainers.filter(c => c !== type);
         setActiveContainers(newActive);
@@ -192,17 +173,23 @@ const BowlBuilder: React.FC = () => {
       localStorage.removeItem('fusionBowl_config');
   };
 
+  // SMART NAVIGATION: Auto-cleanup empty containers when switching
   const handleViewSwitch = (targetView: ContainerType) => {
       if (targetView === currentView) return;
 
+      // 1. Check if the container we are LEAVING is empty
       const isCurrentEmpty = orders[currentView].length === 0;
 
+      // 2. Perform Switch
       if (isCurrentEmpty && activeContainers.length > 1) {
+           // Remove the empty one we are leaving
            setActiveContainers(prev => {
                const filtered = prev.filter(c => c !== currentView);
+               // Ensure target is added if not present
                return filtered.includes(targetView) ? filtered : [...filtered, targetView];
            });
       } else {
+           // Just add target to active if not present
            if (!activeContainers.includes(targetView)) {
                setActiveContainers(prev => [...prev, targetView]);
            }
@@ -224,6 +211,7 @@ const BowlBuilder: React.FC = () => {
     let message = `Hi Fusion Bowl! I'd like to place an order:\n`;
     
     globalSummary.items.forEach(item => {
+        // Skip completely empty/inactive sections in final message
         if (!activeContainers.includes(item.container) && item.ingredients.length === 0) return;
 
         const config = CONTAINER_CONFIG[item.container];
@@ -263,6 +251,7 @@ const BowlBuilder: React.FC = () => {
     }
   };
 
+  // Logic for cycling ghosts
   const getPrevContainer = (curr: ContainerType): ContainerType => {
       if (curr === 'bowl') return 'plate';
       if (curr === 'plate') return 'shake';
@@ -276,6 +265,7 @@ const BowlBuilder: React.FC = () => {
   const prevType = getPrevContainer(currentView);
   const nextType = getNextContainer(currentView);
 
+  // Dynamic visual dimensions
   const getContainerDimensions = () => {
       if (currentView === 'bowl') {
           return 'w-64 h-64 md:w-96 md:h-96 rounded-full border-8 border-white dark:border-neutral-800 shadow-[inset_0_10px_40px_rgba(0,0,0,0.1)]';
@@ -289,17 +279,22 @@ const BowlBuilder: React.FC = () => {
       return ''; 
   };
 
+  // --- RENDER VISUALS --- //
+  
   const renderVisuals = () => {
+      // 1. SHAKE VISUAL (Vortex / Blending)
       if (currentView === 'shake') {
-          const fillLevel = Math.min((currentIngredients.length * 25), 90); // Max 90%, fills up faster with fewer items
+          const fillLevel = Math.min((currentIngredients.length * 10), 90); // Max 90%
           
           return (
               <div className="relative w-full h-full overflow-hidden rounded-b-[3.5rem] rounded-t-sm bg-blue-50/50 dark:bg-blue-900/10">
+                  {/* Liquid */}
                   <motion.div 
                     className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-orange-200 to-yellow-100 opacity-80"
                     animate={{ height: `${fillLevel}%` }}
                     transition={{ type: "spring", stiffness: 50 }}
                   />
+                  {/* Vortex Particles */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <motion.div 
                         animate={{ rotate: 360 }}
@@ -313,7 +308,7 @@ const BowlBuilder: React.FC = () => {
                                 initial={{ scale: 0, x: 0, y: 0 }}
                                 animate={{ 
                                     scale: [1, 0.8, 1],
-                                    x: Math.cos(i) * 40, 
+                                    x: Math.cos(i) * 40, // Simple spiral distrib roughly
                                     y: Math.sin(i) * 40,
                                 }}
                                 style={{
@@ -326,6 +321,7 @@ const BowlBuilder: React.FC = () => {
                          ))}
                     </motion.div>
                   </div>
+                  {/* Blending Lines */}
                   {currentIngredients.length > 0 && (
                       <motion.div 
                         className="absolute inset-0 border-t-4 border-white/30 rounded-full"
@@ -333,6 +329,7 @@ const BowlBuilder: React.FC = () => {
                         transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
                       />
                   )}
+                  {/* Bubbles */}
                   <div className="absolute bottom-4 w-full flex justify-center gap-2">
                      <Droplets className="text-white/50 animate-bounce" size={20} />
                   </div>
@@ -340,6 +337,7 @@ const BowlBuilder: React.FC = () => {
           );
       }
 
+      // 2. SALAD VISUAL (Plate Toss / Scatter)
       if (currentView === 'plate') {
           return (
               <div className="relative w-full h-full rounded-full bg-white dark:bg-neutral-800 overflow-hidden flex items-center justify-center">
@@ -348,8 +346,9 @@ const BowlBuilder: React.FC = () => {
                    
                    <AnimatePresence>
                     {currentIngredients.map((item, i) => {
-                        const angle = (i * 137.5) * (Math.PI / 180); 
-                        const radius = 30 + (i * 2) % 40; 
+                        // Deterministic random position based on index to keep it stable but scattered
+                        const angle = (i * 137.5) * (Math.PI / 180); // Golden angle
+                        const radius = 30 + (i * 2) % 40; // Spread from center
                         const x = Math.cos(angle) * radius;
                         const y = Math.sin(angle) * radius;
                         const r = (i * 45) % 360;
@@ -372,7 +371,7 @@ const BowlBuilder: React.FC = () => {
           );
       }
 
-      // Bowl Visual
+      // 3. BOWL VISUAL (Floating Gravity - Default)
       return (
         <>
             <div className="absolute inset-0 bg-brand-cream dark:bg-neutral-800" />
@@ -483,11 +482,11 @@ const BowlBuilder: React.FC = () => {
                     Adding to {CONTAINER_CONFIG[currentView].label}
                 </h3>
                 <div className="space-y-6 max-h-[600px] overflow-y-auto custom-scrollbar pr-2">
-                    {categoriesToDisplay.map((cat) => (
+                    {categories.map((cat) => (
                     <div key={cat}>
-                        <h4 className="text-xs font-bold uppercase text-gray-400 mb-3 tracking-wider">{CATEGORY_LABELS[cat] || cat}</h4>
+                        <h4 className="text-xs font-bold uppercase text-gray-400 mb-3 tracking-wider">{cat}</h4>
                         <div className="grid grid-cols-3 sm:grid-cols-3 gap-3">
-                        {filteredIngredients.filter(i => i.category === cat).map((ingredient) => (
+                        {INGREDIENTS.filter(i => i.category === cat).map((ingredient) => (
                             <motion.div
                                 key={ingredient.id}
                                 drag={!!currentSize}
@@ -503,7 +502,7 @@ const BowlBuilder: React.FC = () => {
                                 <div className="text-center">
                                     <p className="text-xs font-bold text-gray-700 dark:text-gray-300 leading-tight">{ingredient.name}</p>
                                     <p className="text-[10px] text-gray-400">
-                                        ₹{ingredient.price}
+                                        ₹{ingredient.price}<span className="text-brand-orange">/Kg</span>
                                     </p>
                                 </div>
                             </motion.div>

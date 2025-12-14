@@ -63,17 +63,13 @@ const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
         <p>Fusion Bowl uses cookies and local storage to enhance your experience.</p>
         
         <h4 className="font-bold text-gray-900 dark:text-white mt-4">1. What we store</h4>
-        <p>We store simple data in your browser's "Local Storage" to remember:</p>
-        <ul className="list-disc pl-5 mt-2">
-            <li>Your <strong>Dark Mode / Light Mode</strong> preference.</li>
-            <li>Your <strong>Meal Configuration</strong> (e.g., if you are building a Bowl + Shake combination) so you don't lose your progress if you refresh the page.</li>
-        </ul>
+        <p>We store a simple preference file in your browser's "Local Storage" to remember if you prefer <strong>Dark Mode</strong> or <strong>Light Mode</strong>. This ensures the site looks the way you like it every time you visit.</p>
         
         <h4 className="font-bold text-gray-900 dark:text-white mt-4">2. Third-Party Cookies</h4>
         <p>We may use embedded maps (Google Maps) which may set their own cookies according to their policies. We do not use invasive tracking cookies for advertising.</p>
 
         <h4 className="font-bold text-gray-900 dark:text-white mt-4">3. Managing Preferences</h4>
-        <p>You can clear your browser cache at any time to reset these preferences. This will reset your theme and clear any unsent orders in the Builder.</p>
+        <p>You can clear your browser cache at any time to reset these preferences.</p>
       </div>
     )
   };

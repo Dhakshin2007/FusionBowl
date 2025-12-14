@@ -1,7 +1,6 @@
-
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Minus, RefreshCw, Wand2, Send, Sparkles, MapPin, Trash2, ShoppingBag, Utensils, GlassWater, Circle, X, Edit3, Wind, Droplets } from 'lucide-react';
+import { Plus, Minus, RefreshCw, Wand2, Send, Sparkles, MapPin, Trash2, ShoppingBag, Utensils, GlassWater, Circle, X } from 'lucide-react';
 import { INGREDIENTS } from '../constants';
 import { Ingredient, SectionId } from '../types';
 import Button from './Button';
@@ -30,15 +29,6 @@ const CONTAINER_CONFIG: Record<ContainerType, { label: string; icon: React.React
   },
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-  'fruit': 'Fresh Fruits',
-  'vegetable': 'Fresh Vegetables',
-  'shake-item': 'Cold Pressed Juices',
-  'base': 'Base',
-  'topping': 'Toppings',
-  'dressing': 'Dressings'
-};
-
 const BowlBuilder: React.FC = () => {
   // State for multi-container support
   const [activeContainers, setActiveContainers] = useState<ContainerType[]>(['bowl']);
@@ -61,7 +51,7 @@ const BowlBuilder: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [address, setAddress] = useState<string>('');
   
-  const containerRef = useRef<HTMLDivElement>(null);
+  const bowlRef = useRef<HTMLDivElement>(null);
 
   // Load from Local Storage on Mount
   useEffect(() => {
@@ -88,19 +78,7 @@ const BowlBuilder: React.FC = () => {
     localStorage.setItem('fusionBowl_config', JSON.stringify(config));
   }, [activeContainers, orders, sizes]);
 
-  // Determine allowed categories based on view
-  const getCategoriesForView = (view: ContainerType): string[] => {
-      switch(view) {
-          case 'bowl': return ['fruit', 'topping', 'base'];
-          case 'shake': return ['shake-item'];
-          case 'plate': return ['vegetable', 'fruit', 'topping', 'dressing'];
-          default: return [];
-      }
-  };
-
-  const allowedCategories = getCategoriesForView(currentView);
-  const filteredIngredients = INGREDIENTS.filter(i => allowedCategories.includes(i.category));
-  const categoriesToDisplay = Array.from(new Set(filteredIngredients.map(i => i.category)));
+  const categories = Array.from(new Set(INGREDIENTS.map(i => i.category)));
 
   // Helpers for current view
   const currentIngredients = orders[currentView];
@@ -112,11 +90,7 @@ const BowlBuilder: React.FC = () => {
     let totalC = 0;
     const items: { container: ContainerType; size: string | null; ingredients: {item: Ingredient, qty: number}[] }[] = [];
 
-    // Iterate over predefined order of types for consistent list
-    (['bowl', 'shake', 'plate'] as ContainerType[]).forEach(type => {
-      // Only show in summary if it's active OR has items
-      if (!activeContainers.includes(type) && orders[type].length === 0) return;
-
+    activeContainers.forEach(type => {
       const typeOrders = orders[type];
       const typeSize = sizes[type];
       
@@ -136,7 +110,9 @@ const BowlBuilder: React.FC = () => {
       totalP += typePrice;
       totalC += typeCal;
       
-      items.push({ container: type, size: typeSize, ingredients: typeIngredients });
+      if (typeIngredients.length > 0 || typeSize) {
+          items.push({ container: type, size: typeSize, ingredients: typeIngredients });
+      }
     });
 
     return { totalPrice: totalP, totalCalories: totalC, items };
@@ -152,9 +128,9 @@ const BowlBuilder: React.FC = () => {
     setAiAnalysis('');
   };
 
-  const handleRemoveOne = (ingredientId: string, type: ContainerType = currentView) => {
+  const handleRemoveOne = (ingredientId: string) => {
     setOrders(prev => {
-        const currentList = prev[type];
+        const currentList = prev[currentView];
         const indices = currentList.map((e, i) => e.item.id === ingredientId ? i : -1).filter(i => i !== -1);
         if (indices.length === 0) return prev;
         const lastIndex = indices[indices.length - 1];
@@ -162,24 +138,15 @@ const BowlBuilder: React.FC = () => {
         newArr.splice(lastIndex, 1);
         return {
             ...prev,
-            [type]: newArr
+            [currentView]: newArr
         };
     });
     setAiAnalysis('');
   };
 
-  const handleClearSection = (type: ContainerType) => {
-    setOrders(prev => ({ ...prev, [type]: [] }));
-    setSizes(prev => ({ ...prev, [type]: null }));
+  const handleClearCurrent = () => {
+    setOrders(prev => ({ ...prev, [currentView]: [] }));
     setAiAnalysis('');
-    
-    if (activeContainers.length > 1) {
-        const newActive = activeContainers.filter(c => c !== type);
-        setActiveContainers(newActive);
-        if (currentView === type) {
-            setCurrentView(newActive[0]);
-        }
-    }
   };
 
   const handleClearAll = () => {
@@ -192,23 +159,31 @@ const BowlBuilder: React.FC = () => {
       localStorage.removeItem('fusionBowl_config');
   };
 
-  const handleViewSwitch = (targetView: ContainerType) => {
-      if (targetView === currentView) return;
+  const toggleContainer = (type: ContainerType) => {
+    if (activeContainers.includes(type)) {
+        if (activeContainers.length === 1) {
+            alert("You must have at least one item in your order.");
+            return;
+        }
+        const newActive = activeContainers.filter(t => t !== type);
+        setActiveContainers(newActive);
+        setOrders(prev => ({ ...prev, [type]: [] }));
+        setSizes(prev => ({ ...prev, [type]: null }));
+        if (currentView === type) {
+            setCurrentView(newActive[0]);
+        }
+    } else {
+        setActiveContainers([...activeContainers, type]);
+        setCurrentView(type);
+    }
+  };
 
-      const isCurrentEmpty = orders[currentView].length === 0;
-
-      if (isCurrentEmpty && activeContainers.length > 1) {
-           setActiveContainers(prev => {
-               const filtered = prev.filter(c => c !== currentView);
-               return filtered.includes(targetView) ? filtered : [...filtered, targetView];
-           });
+  const switchTo = (type: ContainerType) => {
+      if (!activeContainers.includes(type)) {
+          toggleContainer(type); 
       } else {
-           if (!activeContainers.includes(targetView)) {
-               setActiveContainers(prev => [...prev, targetView]);
-           }
+          setCurrentView(type);
       }
-      
-      setCurrentView(targetView);
   };
 
   const handleAIAnalysis = async () => {
@@ -224,8 +199,6 @@ const BowlBuilder: React.FC = () => {
     let message = `Hi Fusion Bowl! I'd like to place an order:\n`;
     
     globalSummary.items.forEach(item => {
-        if (!activeContainers.includes(item.container) && item.ingredients.length === 0) return;
-
         const config = CONTAINER_CONFIG[item.container];
         message += `\n*${config.label}* (${item.size || 'No Size'}):\n`;
         if (item.ingredients.length === 0) {
@@ -249,15 +222,15 @@ const BowlBuilder: React.FC = () => {
 
   const handleDragEnd = (event: any, info: any, ingredient: Ingredient) => {
     if (!currentSize) return;
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
+    if (!bowlRef.current) return;
+    const bowlRect = bowlRef.current.getBoundingClientRect();
     const dropPoint = { x: info.point.x, y: info.point.y };
 
     if (
-        dropPoint.x >= rect.left && 
-        dropPoint.x <= rect.right && 
-        dropPoint.y >= rect.top && 
-        dropPoint.y <= rect.bottom
+        dropPoint.x >= bowlRect.left && 
+        dropPoint.x <= bowlRect.right && 
+        dropPoint.y >= bowlRect.top && 
+        dropPoint.y <= bowlRect.bottom
     ) {
         handleAdd(ingredient);
     }
@@ -273,133 +246,29 @@ const BowlBuilder: React.FC = () => {
       if (curr === 'shake') return 'plate';
       return 'bowl'; 
   };
+
   const prevType = getPrevContainer(currentView);
   const nextType = getNextContainer(currentView);
 
+  // Dynamic visual sizing logic
   const getContainerDimensions = () => {
       if (currentView === 'bowl') {
-          return 'w-64 h-64 md:w-96 md:h-96 rounded-full border-8 border-white dark:border-neutral-800 shadow-[inset_0_10px_40px_rgba(0,0,0,0.1)]';
+          if (currentSize === 'Mini') return 'w-64 h-64 border-white dark:border-neutral-800';
+          if (currentSize === 'Grand') return 'w-96 h-96 border-white dark:border-neutral-800';
+          return 'w-80 h-80 border-white dark:border-neutral-800'; // Compact
       }
       if (currentView === 'shake') {
-          return 'w-48 h-80 rounded-b-[4rem] rounded-t-lg border-8 border-white dark:border-neutral-800 shadow-xl'; 
+          if (currentSize === 'Shot') return 'w-40 h-64 rounded-b-[3rem] rounded-t-lg border-white dark:border-neutral-800';
+          if (currentSize === 'Mega') return 'w-56 h-96 rounded-b-[5rem] rounded-t-lg border-white dark:border-neutral-800';
+          return 'w-48 h-80 rounded-b-[4rem] rounded-t-lg border-white dark:border-neutral-800'; // Default
       }
       if (currentView === 'plate') {
-          return 'w-72 h-72 md:w-[28rem] md:h-[28rem] rounded-full border-4 border-gray-100 dark:border-neutral-700 shadow-lg bg-white dark:bg-neutral-800'; 
+          // Salad Plate
+          if (currentSize === 'Lite') return 'w-64 h-64 md:w-72 md:h-72 rounded-full border-gray-100 dark:border-neutral-700 shadow-none';
+          if (currentSize === 'Platter') return 'w-80 h-80 md:w-[32rem] md:h-[32rem] rounded-full border-gray-100 dark:border-neutral-700 shadow-none';
+          return 'w-72 h-72 md:w-[26rem] md:h-[26rem] rounded-full border-gray-100 dark:border-neutral-700 shadow-none'; // Crunch
       }
-      return ''; 
-  };
-
-  const renderVisuals = () => {
-      if (currentView === 'shake') {
-          const fillLevel = Math.min((currentIngredients.length * 25), 90); // Max 90%, fills up faster with fewer items
-          
-          return (
-              <div className="relative w-full h-full overflow-hidden rounded-b-[3.5rem] rounded-t-sm bg-blue-50/50 dark:bg-blue-900/10">
-                  <motion.div 
-                    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-orange-200 to-yellow-100 opacity-80"
-                    animate={{ height: `${fillLevel}%` }}
-                    transition={{ type: "spring", stiffness: 50 }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.div 
-                        animate={{ rotate: 360 }}
-                        transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-                        className="w-3/4 h-3/4"
-                    >
-                         {currentIngredients.map((item, i) => (
-                             <motion.div
-                                key={item.id}
-                                className="absolute text-2xl"
-                                initial={{ scale: 0, x: 0, y: 0 }}
-                                animate={{ 
-                                    scale: [1, 0.8, 1],
-                                    x: Math.cos(i) * 40, 
-                                    y: Math.sin(i) * 40,
-                                }}
-                                style={{
-                                    top: '50%',
-                                    left: '50%',
-                                }}
-                             >
-                                 {item.item.emoji}
-                             </motion.div>
-                         ))}
-                    </motion.div>
-                  </div>
-                  {currentIngredients.length > 0 && (
-                      <motion.div 
-                        className="absolute inset-0 border-t-4 border-white/30 rounded-full"
-                        animate={{ rotate: -360 }}
-                        transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-                      />
-                  )}
-                  <div className="absolute bottom-4 w-full flex justify-center gap-2">
-                     <Droplets className="text-white/50 animate-bounce" size={20} />
-                  </div>
-              </div>
-          );
-      }
-
-      if (currentView === 'plate') {
-          return (
-              <div className="relative w-full h-full rounded-full bg-white dark:bg-neutral-800 overflow-hidden flex items-center justify-center">
-                   <div className="absolute inset-4 rounded-full border border-gray-100 dark:border-neutral-700 opacity-50" />
-                   <div className="absolute inset-8 rounded-full border border-gray-50 dark:border-neutral-700/50 opacity-50" />
-                   
-                   <AnimatePresence>
-                    {currentIngredients.map((item, i) => {
-                        const angle = (i * 137.5) * (Math.PI / 180); 
-                        const radius = 30 + (i * 2) % 40; 
-                        const x = Math.cos(angle) * radius;
-                        const y = Math.sin(angle) * radius;
-                        const r = (i * 45) % 360;
-
-                        return (
-                            <motion.div
-                                key={item.id}
-                                className="absolute text-4xl shadow-sm drop-shadow-md"
-                                initial={{ opacity: 0, scale: 2, y: -50 }}
-                                animate={{ opacity: 1, scale: 1, x: `${x}%`, y: `${y}%`, rotate: r }}
-                                exit={{ opacity: 0, scale: 0 }}
-                                transition={{ type: "spring", stiffness: 200, damping: 15 }}
-                            >
-                                {item.item.emoji}
-                            </motion.div>
-                        );
-                    })}
-                   </AnimatePresence>
-              </div>
-          );
-      }
-
-      // Bowl Visual
-      return (
-        <>
-            <div className="absolute inset-0 bg-brand-cream dark:bg-neutral-800" />
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/5 dark:to-black/20 pointer-events-none z-20" />
-            <AnimatePresence>
-                {currentIngredients.map((item) => {
-                    const randomX = Math.random() * 60 - 30;
-                    const randomY = Math.random() * 60 - 30;
-                    const randomRotate = Math.random() * 360;
-                    return (
-                        <motion.div
-                            key={item.id}
-                            initial={{ scale: 0, y: -100, opacity: 0 }}
-                            animate={{ scale: 1, y: randomY, x: randomX, opacity: 1, rotate: randomRotate }}
-                            exit={{ scale: 0, opacity: 0 }}
-                            drag
-                            dragConstraints={containerRef}
-                            whileDrag={{ scale: 1.2, cursor: 'grabbing' }}
-                            className="absolute text-4xl md:text-5xl cursor-grab select-none drop-shadow-md hover:scale-110 transition-transform z-30"
-                        >
-                            {item.item.emoji}
-                        </motion.div>
-                    );
-                })}
-            </AnimatePresence>
-        </>
-      );
+      return 'w-80 h-80 rounded-full border-white dark:border-neutral-800'; // Fallback
   };
 
   return (
@@ -419,11 +288,11 @@ const BowlBuilder: React.FC = () => {
             Build Your <span className="text-brand-green">Perfect Meal</span>
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Select an item to add it. Empty items are automatically removed when you switch.
+            Combine a Bowl, Shake, or Salad Plate. Customize each one to your taste.
           </p>
         </motion.div>
 
-        {/* Top Control Bar */}
+        {/* Top Control Bar: Active Containers */}
         <div className="flex flex-wrap justify-center gap-4 mb-8">
             {(['bowl', 'shake', 'plate'] as ContainerType[]).map((type) => {
                 const isActive = activeContainers.includes(type);
@@ -433,7 +302,7 @@ const BowlBuilder: React.FC = () => {
                 return (
                     <button
                         key={type}
-                        onClick={() => handleViewSwitch(type)}
+                        onClick={() => isActive ? setCurrentView(type) : toggleContainer(type)}
                         className={`relative flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 border-2 ${
                             isCurrent 
                                 ? `${config.color} text-white border-transparent shadow-lg scale-105` 
@@ -444,6 +313,14 @@ const BowlBuilder: React.FC = () => {
                     >
                         {config.icon}
                         <span className="font-bold">{isActive ? config.label : `Add ${config.label}`}</span>
+                        {isActive && (
+                            <div
+                                onClick={(e) => { e.stopPropagation(); toggleContainer(type); }}
+                                className="ml-2 p-1 rounded-full hover:bg-black/20 transition-colors"
+                            >
+                                <X size={12} />
+                            </div>
+                        )}
                     </button>
                 )
             })}
@@ -473,7 +350,7 @@ const BowlBuilder: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
-          {/* LEFT: Ingredient Palette */}
+          {/* LEFT: Ingredient Palette (Dependent on Current View) */}
           <motion.div 
             className={`lg:col-span-5 order-2 lg:order-1 transition-opacity duration-300 ${!currentSize ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}
           >
@@ -483,11 +360,11 @@ const BowlBuilder: React.FC = () => {
                     Adding to {CONTAINER_CONFIG[currentView].label}
                 </h3>
                 <div className="space-y-6 max-h-[600px] overflow-y-auto custom-scrollbar pr-2">
-                    {categoriesToDisplay.map((cat) => (
+                    {categories.map((cat) => (
                     <div key={cat}>
-                        <h4 className="text-xs font-bold uppercase text-gray-400 mb-3 tracking-wider">{CATEGORY_LABELS[cat] || cat}</h4>
+                        <h4 className="text-xs font-bold uppercase text-gray-400 mb-3 tracking-wider">{cat}</h4>
                         <div className="grid grid-cols-3 sm:grid-cols-3 gap-3">
-                        {filteredIngredients.filter(i => i.category === cat).map((ingredient) => (
+                        {INGREDIENTS.filter(i => i.category === cat).map((ingredient) => (
                             <motion.div
                                 key={ingredient.id}
                                 drag={!!currentSize}
@@ -503,7 +380,7 @@ const BowlBuilder: React.FC = () => {
                                 <div className="text-center">
                                     <p className="text-xs font-bold text-gray-700 dark:text-gray-300 leading-tight">{ingredient.name}</p>
                                     <p className="text-[10px] text-gray-400">
-                                        ₹{ingredient.price}
+                                        ₹{ingredient.price}<span className="text-brand-orange">/Kg</span>
                                     </p>
                                 </div>
                             </motion.div>
@@ -515,7 +392,7 @@ const BowlBuilder: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* RIGHT: Visuals + Split Cart */}
+          {/* RIGHT: The Builder Area (Sticky) */}
           <motion.div 
             className="lg:col-span-7 order-1 lg:order-2 sticky top-20"
           >
@@ -526,27 +403,27 @@ const BowlBuilder: React.FC = () => {
                     
                     {/* PREV GHOST (Left) */}
                     <div 
-                        onClick={() => handleViewSwitch(prevType)}
+                        onClick={() => switchTo(prevType)}
                         className={`absolute left-0 md:left-4 top-1/2 transform -translate-y-1/2 w-20 h-20 md:w-24 md:h-24 border-2 border-dashed rounded-full cursor-pointer transition-all duration-300 flex items-center justify-center flex-col gap-1 z-10 hover:scale-110 hover:border-brand-orange bg-white/50 dark:bg-neutral-800/50 backdrop-blur-sm group`}
                     >
                          <div className="text-gray-400 group-hover:text-brand-orange transition-colors">
                              {CONTAINER_CONFIG[prevType].icon}
                          </div>
                          <span className="text-[9px] font-bold uppercase tracking-widest text-gray-400 group-hover:text-brand-orange text-center px-1">
-                             {activeContainers.includes(prevType) ? 'Edit' : 'Add'} <br/> {CONTAINER_CONFIG[prevType].label}
+                             {activeContainers.includes(prevType) ? 'Switch to' : 'Add'} <br/> {CONTAINER_CONFIG[prevType].label}
                          </span>
                     </div>
 
                     {/* NEXT GHOST (Right) */}
                     <div 
-                        onClick={() => handleViewSwitch(nextType)}
+                        onClick={() => switchTo(nextType)}
                         className={`absolute right-0 md:right-4 top-1/2 transform -translate-y-1/2 w-20 h-20 md:w-24 md:h-24 border-2 border-dashed rounded-full cursor-pointer transition-all duration-300 flex items-center justify-center flex-col gap-1 z-10 hover:scale-110 hover:border-brand-orange bg-white/50 dark:bg-neutral-800/50 backdrop-blur-sm group`}
                     >
                          <div className="text-gray-400 group-hover:text-brand-orange transition-colors">
                              {CONTAINER_CONFIG[nextType].icon}
                          </div>
                          <span className="text-[9px] font-bold uppercase tracking-widest text-gray-400 group-hover:text-brand-orange text-center px-1">
-                             {activeContainers.includes(nextType) ? 'Edit' : 'Add'} <br/> {CONTAINER_CONFIG[nextType].label}
+                             {activeContainers.includes(nextType) ? 'Switch to' : 'Add'} <br/> {CONTAINER_CONFIG[nextType].label}
                          </span>
                     </div>
 
@@ -556,9 +433,11 @@ const BowlBuilder: React.FC = () => {
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ type: "spring", bounce: 0.3 }}
-                        ref={containerRef}
-                        className={`relative transition-all duration-500 flex items-center justify-center ${getContainerDimensions()}`}
+                        ref={bowlRef}
+                        className={`relative transition-all duration-500 border-8 flex items-center justify-center overflow-hidden shadow-[inset_0_10px_40px_rgba(0,0,0,0.1)] bg-brand-cream dark:bg-neutral-800 ring-1 ring-gray-200 dark:ring-neutral-700 ${getContainerDimensions()}`}
                     >
+                        {/* Inner Texture */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/5 dark:to-black/20 pointer-events-none z-20" />
                         
                         {/* BRAND LOGO WATERMARK */}
                         <img 
@@ -577,28 +456,47 @@ const BowlBuilder: React.FC = () => {
                                 </div>
                             </div>
                         ) : currentIngredients.length === 0 && (
-                            <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
-                                <div className="text-center opacity-40 p-4">
-                                    <ShoppingBag className="w-12 h-12 mx-auto mb-2 text-gray-400" />
-                                    <p className="text-sm font-medium">
-                                        {currentView === 'shake' ? 'Add fruits to blend' : currentView === 'plate' ? 'Plating salad...' : 'Drag ingredients here'}
-                                    </p>
-                                </div>
+                            <div className="text-center opacity-40 pointer-events-none relative z-30 p-4">
+                                <ShoppingBag className="w-12 h-12 mx-auto mb-2 text-gray-400" />
+                                <p className="text-sm font-medium">
+                                    {currentView === 'shake' ? 'Add fruits to blend' : 'Drag ingredients here'}
+                                </p>
                             </div>
                         )}
 
-                        {renderVisuals()}
+                        {/* Visual Ingredients */}
+                        <AnimatePresence>
+                            {currentIngredients.map((item) => {
+                                const randomX = Math.random() * 60 - 30;
+                                const randomY = Math.random() * 60 - 30;
+                                const randomRotate = Math.random() * 360;
 
+                                return (
+                                    <motion.div
+                                        key={item.id}
+                                        initial={{ scale: 0, y: -100, opacity: 0 }}
+                                        animate={{ scale: 1, y: randomY, x: randomX, opacity: 1, rotate: randomRotate }}
+                                        exit={{ scale: 0, opacity: 0 }}
+                                        drag
+                                        dragConstraints={bowlRef}
+                                        whileDrag={{ scale: 1.2, cursor: 'grabbing' }}
+                                        className="absolute text-4xl md:text-5xl cursor-grab select-none drop-shadow-md hover:scale-110 transition-transform z-30"
+                                    >
+                                        {item.item.emoji}
+                                    </motion.div>
+                                );
+                            })}
+                        </AnimatePresence>
                     </motion.div>
                 </div>
 
-                {/* --- FULL SPLIT CART UI --- */}
+                {/* Controls & Summary */}
                 <div className="bg-gray-50 dark:bg-neutral-800/50 rounded-2xl p-6 border border-gray-100 dark:border-neutral-800">
                     
-                    {/* Header: Total Price & Calories */}
+                    {/* Global Summary Header */}
                     <div className="flex justify-between items-end mb-6 pb-4 border-b border-dashed border-gray-200 dark:border-neutral-700">
                         <div>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Total Order Price</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Total Meal Price</p>
                             <p className="text-3xl font-serif font-bold text-brand-dark dark:text-brand-cream">₹{globalSummary.totalPrice}</p>
                         </div>
                         <div className="text-right">
@@ -607,74 +505,66 @@ const BowlBuilder: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Detailed Segmented Cart */}
-                    <div className="space-y-4 mb-6 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
-                         {globalSummary.items.length === 0 && (
-                             <p className="text-center text-gray-400 text-sm italic py-4">Your cart is empty. Start adding items!</p>
-                         )}
+                    {/* List Items in CURRENT View */}
+                    <div className="mb-2 flex justify-between items-center">
+                        <span className="text-xs font-bold uppercase text-gray-400">
+                            Inside {CONTAINER_CONFIG[currentView].label}
+                        </span>
+                        {currentIngredients.length > 0 && (
+                            <button onClick={handleClearCurrent} className="text-xs text-red-400 hover:text-red-500 flex items-center gap-1">
+                                <Trash2 size={10} /> Clear Container
+                            </button>
+                        )}
+                    </div>
 
-                         {globalSummary.items.map((cartSection) => {
-                             const config = CONTAINER_CONFIG[cartSection.container];
-                             return (
-                                 <div key={cartSection.container} className="bg-white dark:bg-neutral-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-neutral-700">
-                                     {/* Section Header */}
-                                     <div className="flex justify-between items-center mb-3">
-                                         <div className="flex items-center gap-2">
-                                             <span className={`p-1.5 rounded-full text-white ${config.color} text-xs`}>
-                                                 {config.icon}
-                                             </span>
-                                             <div>
-                                                 <h4 className="font-bold text-sm text-gray-800 dark:text-gray-200">{config.label}</h4>
-                                                 <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wide">{cartSection.size || 'Size not selected'}</span>
-                                             </div>
-                                         </div>
-                                         <div className="flex gap-2">
-                                            <button 
-                                                onClick={() => handleViewSwitch(cartSection.container)}
-                                                className="text-gray-400 hover:text-brand-orange p-1"
-                                                title="Edit"
-                                            >
-                                                <Edit3 size={14} />
-                                            </button>
-                                            <button 
-                                                onClick={() => handleClearSection(cartSection.container)}
-                                                className="text-gray-400 hover:text-red-500 p-1"
-                                                title={`Clear ${config.label}`}
-                                            >
-                                                <Trash2 size={14} />
-                                            </button>
-                                         </div>
-                                     </div>
+                    <div className="space-y-3 mb-6 max-h-48 overflow-y-auto custom-scrollbar pr-2 min-h-[100px] bg-white dark:bg-neutral-800 p-2 rounded-xl border border-gray-100 dark:border-neutral-700/50">
+                        {(() => {
+                            // Calculate summary specifically for current view ingredients for the UI list
+                            const grouped: Record<string, {item: Ingredient, qty: number}> = {};
+                            currentIngredients.forEach(entry => {
+                                if (grouped[entry.item.id]) {
+                                    grouped[entry.item.id].qty += 1;
+                                } else {
+                                    grouped[entry.item.id] = { item: entry.item, qty: 1 };
+                                }
+                            });
+                            const viewSummary = Object.values(grouped);
 
-                                     {/* Items List */}
-                                     <div className="space-y-2">
-                                         {cartSection.ingredients.length === 0 ? (
-                                             <p className="text-xs text-red-400 italic">Empty container (will be ignored)</p>
-                                         ) : (
-                                            cartSection.ingredients.map(line => (
-                                                <div key={line.item.id} className="flex justify-between items-center text-xs">
-                                                    <div className="flex items-center gap-2">
-                                                        <span>{line.item.emoji}</span>
-                                                        <span className="text-gray-700 dark:text-gray-300">{line.item.name}</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-3">
-                                                        <span className="text-gray-400">₹{line.item.price}</span>
-                                                        <div className="flex items-center bg-gray-100 dark:bg-neutral-700 rounded px-1">
-                                                            <button onClick={() => handleRemoveOne(line.item.id, cartSection.container)} className="hover:text-red-500 px-1">-</button>
-                                                            <span className="font-bold w-4 text-center">{line.qty}</span>
-                                                            <button onClick={() => {
-                                                                if(currentView !== cartSection.container) handleViewSwitch(cartSection.container);
-                                                                else handleAdd(line.item);
-                                                            }} className="hover:text-green-500 px-1">+</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))
-                                         )}
-                                     </div>
-                                 </div>
-                             );
-                         })}
+                            if (viewSummary.length === 0) {
+                                return (
+                                    <div className="h-full flex items-center justify-center text-gray-400 text-sm italic">
+                                        {!currentSize ? "Select a size above first." : "Container is empty."}
+                                    </div>
+                                );
+                            }
+
+                            return viewSummary.map((line) => (
+                                <div key={line.item.id} className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-neutral-700/50 rounded-lg transition-colors">
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-xl">{line.item.emoji}</span>
+                                        <div>
+                                            <p className="font-bold text-xs text-gray-800 dark:text-gray-200">{line.item.name}</p>
+                                            <p className="text-[10px] text-gray-400">₹{line.item.price} x {line.qty}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <button 
+                                            onClick={() => handleRemoveOne(line.item.id)}
+                                            className="w-6 h-6 flex items-center justify-center rounded bg-gray-100 dark:bg-neutral-700 hover:text-red-500"
+                                        >
+                                            <Minus size={12} />
+                                        </button>
+                                        <span className="text-xs font-bold w-4 text-center">{line.qty}</span>
+                                        <button 
+                                            onClick={() => handleAdd(line.item)}
+                                            className="w-6 h-6 flex items-center justify-center rounded bg-gray-100 dark:bg-neutral-700 hover:text-green-500"
+                                        >
+                                            <Plus size={12} />
+                                        </button>
+                                    </div>
+                                </div>
+                            ));
+                        })()}
                     </div>
 
                     {/* Address Input */}
@@ -697,16 +587,16 @@ const BowlBuilder: React.FC = () => {
                         <Button 
                             variant="primary" 
                             onClick={handleWhatsAppOrder} 
-                            disabled={globalSummary.items.length === 0 || globalSummary.totalPrice === 0}
+                            disabled={globalSummary.items.length === 0}
                             className="w-full gap-2 shadow-orange-200 dark:shadow-none"
                         >
-                            <Send size={16} /> Order Via WhatsApp
+                            <Send size={16} /> Order Meal
                         </Button>
                         <button
                             onClick={handleClearAll}
                             className="flex items-center justify-center gap-2 px-4 py-3 rounded-full border border-gray-200 dark:border-neutral-700 text-gray-500 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors disabled:opacity-50 text-sm font-medium"
                         >
-                            <Trash2 size={16} /> Clear All
+                            <Trash2 size={16} /> Reset All
                         </button>
                     </div>
 

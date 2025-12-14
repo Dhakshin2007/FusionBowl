@@ -43,9 +43,14 @@ const Navbar: React.FC = () => {
       }`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
-        {/* Logo - Image Removed as requested, text only */}
+        {/* Logo */}
         <a href="#" className="flex items-center gap-3 group">
-            <span className="text-3xl font-serif font-bold text-brand-dark dark:text-brand-cream tracking-tight transition-colors">
+            <img 
+              src="https://i.postimg.cc/PfYmDp54/Fusion-Bowl-Logo.png" 
+              alt="Fusion Bowl Logo" 
+              className="h-10 w-auto md:h-12 drop-shadow-sm"
+            />
+            <span className="hidden md:block text-3xl font-serif font-bold text-brand-dark dark:text-brand-cream tracking-tight transition-colors">
               Fusion<span className="text-brand-orange">Bowl</span>
             </span>
         </a>
