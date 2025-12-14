@@ -70,7 +70,7 @@ export const TESTIMONIALS = [
   },
   {
     name: "Nitin Bhargav",
-    role: "High Court Advocate",
+    role: "Corporate Lead",
     text: "Fusion Bowl transformed our office lunches. The team is healthier, happier, and more productive.",
     rating: 5
   },

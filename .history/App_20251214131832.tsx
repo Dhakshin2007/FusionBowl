@@ -88,11 +88,11 @@ const App: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4 pt-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg text-green-600 dark:text-green-400"><Truck size={20} /></div>
-                    <span className="font-medium dark:text-gray-300">Hand Picked with Love 💓</span>
+                    <span className="font-medium dark:text-gray-300">Hand Picked with </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400"><Clock size={20} /></div>
-                    <span className="font-medium dark:text-gray-300">Freshly Prepared 🎀</span>
+                    <span className="font-medium dark:text-gray-300">Prepared Daily</span>
                   </div>
                 </div>
               </motion.div>

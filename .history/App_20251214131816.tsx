@@ -78,7 +78,7 @@ const App: React.FC = () => {
                 <h2 className="text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream">Not Just a Fruit Shop. <br/>A Daily Ritual.</h2>
                 <div className="w-20 h-1 bg-brand-orange"></div>
                 <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                  Fusion Bowl started with a simple question: "Why is healthy food so boring?" in the Young Minds of an Enthusiastic Team
+                  Fusion Bowl started with a simple question: "Why is healthy food so boring?" in the Young Minds
                   We believe that eating fresh shouldn't feel like a chore. It should be colorful, textural, and deeply satisfying.
                 </p>
                 <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -88,11 +88,11 @@ const App: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4 pt-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg text-green-600 dark:text-green-400"><Truck size={20} /></div>
-                    <span className="font-medium dark:text-gray-300">Hand Picked with Love 💓</span>
+                    <span className="font-medium dark:text-gray-300">Farm Direct</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400"><Clock size={20} /></div>
-                    <span className="font-medium dark:text-gray-300">Freshly Prepared 🎀</span>
+                    <span className="font-medium dark:text-gray-300">Prepared Daily</span>
                   </div>
                 </div>
               </motion.div>

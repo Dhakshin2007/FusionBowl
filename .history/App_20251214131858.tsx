@@ -92,7 +92,7 @@ const App: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400"><Clock size={20} /></div>
-                    <span className="font-medium dark:text-gray-300">Freshly Prepared 🎀</span>
+                    <span className="font-medium dark:text-gray-300">Freshly Prepared </span>
                   </div>
                 </div>
               </motion.div>
