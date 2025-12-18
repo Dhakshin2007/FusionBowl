@@ -286,7 +286,7 @@ const App: React.FC = () => {
                 </h5>
                 <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                   <p><span className="font-medium text-gray-700 dark:text-gray-300">Mrng:</span> 7:00 AM - 11:00 AM</p>
-                  <p><span className="font-medium text-gray-700 dark:text-gray-300">Evng:</span> 3:30 PM - 7:00 PM</p>
+                  <p><span className="font-medium text-gray-700 dark:text-gray-300">Evng:</span> 3:30 PM - 6:00 PM</p>
                   <p className="text-brand-orange font-medium text-xs mt-1">Sunday is a Holiday</p>
                 </div>
               </div>

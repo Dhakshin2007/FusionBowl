@@ -115,7 +115,7 @@ export const PACKS = {
 export const SERVICES: Service[] = [
   {
     id: 'daily',
-    title: 'Subscriptions',
+    title: 'Daily Subscriptions',
     description: 'A hassle free morning ritual for consistent health.',
     icon: 'calendar',
     cta: 'Subscribe Now'
@@ -178,7 +178,7 @@ export const SIGNATURE_BOWLS = [
     name: 'Steamed Vegetable Salad',
     ingredients: 'Steamed vegetables, aromatic herbs, simple seasoning , mild spices & olive oil dressing',
     price: 129,
-    calories: 250,
+    calories: 320,
     tag: 'Vegetarian Fav'
   },
   {
@@ -186,7 +186,7 @@ export const SIGNATURE_BOWLS = [
     name: 'Protien Rich Chicken Salad',
     ingredients: 'Tender chicken, mixed greens, spices, olive oil , signature dressing',
     price: 149,
-    calories: 250,
+    calories: 180,
     tag: 'Gym Favorite'
   }
 ];

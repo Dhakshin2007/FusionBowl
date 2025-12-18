@@ -186,7 +186,7 @@ export const SIGNATURE_BOWLS = [
     name: 'Protien Rich Chicken Salad',
     ingredients: 'Tender chicken, mixed greens, spices, olive oil , signature dressing',
     price: 149,
-    calories: 250,
+    calories: 150,
     tag: 'Gym Favorite'
   }
 ];

@@ -21,7 +21,7 @@ const MenuSection: React.FC = () => {
           <span className="text-brand-orange font-semibold tracking-wider uppercase text-sm">Chef's Selection</span>
           <h2 className="text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream mt-2">Signature Salad Bowls</h2>
           <p className="text-gray-600 dark:text-gray-400 mt-4 max-w-xl mx-auto">
-            Not sure what to build? Click on any bowl to order our nutritionist approved combinations instantly.
+            Not sure what to build? Click on any bowl to order our nutritionist-approved combinations instantly.
           </p>
         </motion.div>
 
@@ -57,8 +57,8 @@ const MenuSection: React.FC = () => {
                    <span className="text-xl font-bold text-brand-dark dark:text-brand-cream">₹{bowl.price}</span>
                 </div>
                 <div>
-                   <span className="text-xs text-gray-500 dark:text-gray-500 block uppercase tracking-wider text-right">Serving</span>
-                   <span className="text-sm font-medium text-brand-green">{bowl.calories} g</span>
+                   <span className="text-xs text-gray-500 dark:text-gray-500 block uppercase tracking-wider text-right">Energy</span>
+                   <span className="text-sm font-medium text-brand-green">{bowl.calories} kcal</span>
                 </div>
               </div>
 

@@ -243,7 +243,7 @@ const App: React.FC = () => {
                  <img 
                     src="https://i.postimg.cc/SxPbst4r/Fusion-Bowl-PNG-(Bg-removed).png" 
                     alt="Fusion Bowl Logo" 
-                    className="h-16 w-auto" 
+                    className="h-18 w-auto" 
                  />
                  <div className="text-3xl font-serif font-bold text-brand-dark dark:text-brand-cream">
                     Fusion<span className="text-brand-orange">Bowl</span>
@@ -285,8 +285,8 @@ const App: React.FC = () => {
                   <Clock className="w-4 h-4 text-brand-orange" /> Delivery Timings
                 </h5>
                 <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                  <p><span className="font-medium text-gray-700 dark:text-gray-300">Mrng:</span> 7:00 AM - 11:00 AM</p>
-                  <p><span className="font-medium text-gray-700 dark:text-gray-300">Evng:</span> 3:30 PM - 7:00 PM</p>
+                  <p><span className="font-medium text-gray-700 dark:text-gray-300">Mrng:</span> 6:30 AM - 10:30 AM</p>
+                  <p><span className="font-medium text-gray-700 dark:text-gray-300">Evng:</span> 3:30 PM - 6:30 PM</p>
                   <p className="text-brand-orange font-medium text-xs mt-1">Sunday is a Holiday</p>
                 </div>
               </div>

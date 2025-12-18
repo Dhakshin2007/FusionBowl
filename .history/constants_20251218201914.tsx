@@ -178,7 +178,7 @@ export const SIGNATURE_BOWLS = [
     name: 'Steamed Vegetable Salad',
     ingredients: 'Steamed vegetables, aromatic herbs, simple seasoning , mild spices & olive oil dressing',
     price: 129,
-    calories: 250,
+    calories: 320,
     tag: 'Vegetarian Fav'
   },
   {

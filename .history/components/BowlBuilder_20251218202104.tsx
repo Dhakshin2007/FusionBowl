@@ -229,7 +229,7 @@ input?.focus();
           >
             Build Your <span className="text-brand-orange">Fruit Platter</span>
           </motion.h2>
-          <p className="text-gray-500 max-w-lg mx-auto mb-12 text-sm md:text-base">Elevate your experience with your own customization. Select your platter and curate each compartment with handpicked fruits.</p>
+          <p className="text-gray-500 max-w-lg mx-auto mb-12 text-sm md:text-base">E Select your pack and curate each compartment with handpicked fruits.</p>
           
           <div className="flex flex-col md:flex-row justify-center items-stretch gap-6 max-w-5xl mx-auto">
             <button
