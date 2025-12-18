@@ -307,7 +307,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                                   }`}
                               >
                                 <span className="relative z-10 block text-lg">{d}</span>
-                                <span className={`text-[12px] font-medium mt-1 ${duration === d ? 'text-black/90' : 'text-gray-600'}`}>
+                                <span className={`text-[10px] font-medium mt-1 ${duration === d ? 'text-black/80' : 'text-gray-400'}`}>
                                   {days} serving days
                                 </span>
                                 {duration === d && <Sparkles size={16} className="absolute top-2 right-2 opacity-50" />}
