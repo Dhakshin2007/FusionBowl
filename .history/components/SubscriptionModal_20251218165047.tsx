@@ -52,8 +52,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
     return slots;
   };
 
-    const morningSlots = generateTimeSlots(7, 0, 11, 0);
-    const eveningSlots = generateTimeSlots(15, 30, 19, 0);
+const morningSlots = generateTimeSlots(7, 0, 11, 0);
+const eveningSlots = generateTimeSlots(15, 30, 19, 0);
 
 
   const getServingDays = (): number => {

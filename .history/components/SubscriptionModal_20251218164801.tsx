@@ -23,38 +23,16 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
   const [exclusions, setExclusions] = useState<Record<string, string[]>>({});
 
   // Generate time slots (every 30 minutes)
-  const generateTimeSlots = (
-    startHour: number,
-    startMinute: number,
-    endHour: number,
-    endMinute: number
-  ): TimeSlot[] => {
+  const generateTimeSlots = (startHour: number, endHour: number): TimeSlot[] => {
     const slots: TimeSlot[] = [];
-
-    let hour = startHour;
-    let minute = startMinute;
-
-    while (hour < endHour || (hour === endHour && minute <= endMinute)) {
-      const displayHour = hour % 12 === 0 ? 12 : hour % 12;
-      const period = hour >= 12 ? 'PM' : 'AM';
-
-      slots.push(
-        `${displayHour}:${minute.toString().padStart(2, '0')} ${period}`
-      );
-
-      minute += 30;
-      if (minute >= 60) {
-        minute = 0;
-        hour += 1;
-      }
+    for (let hour = startHour; hour < endHour; hour++) {
+      slots.push(`${hour}:00 ${hour >= 12 ? 'PM' : 'AM'}`);
+      slots.push(`${hour}:30 ${hour >= 12 ? 'PM' : 'AM'}`);
     }
-
     return slots;
   };
-
-    const morningSlots = generateTimeSlots(7, 0, 11, 0);
-    const eveningSlots = generateTimeSlots(15, 30, 19, 0);
-
+  const morningSlots = generateTimeSlots(7, 12);
+  const eveningSlots = generateTimeSlots(16, 19);
 
   const getServingDays = (): number => {
     if (duration === '15 Days') return 13;
@@ -518,31 +496,31 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                     </span>
                   </div>
                 )}
-              </div>
+                </div>
 
 
-              <div className="flex gap-3">
-                {step > 1 && (
-                  <button
-                    onClick={handleBack}
-                    className="flex-1 flex items-center justify-center gap-2 py-4 rounded-full border-2 border-gray-100 dark:border-neutral-800 font-bold text-gray-500 hover:bg-gray-50 dark:hover:bg-neutral-900 transition-all"
-                  >
-                    <ChevronLeft size={18} /> Back
-                  </button>
-                )}
+                <div className="flex gap-3">
+                  {step > 1 && (
+                    <button
+                      onClick={handleBack}
+                      className="flex-1 flex items-center justify-center gap-2 py-4 rounded-full border-2 border-gray-100 dark:border-neutral-800 font-bold text-gray-500 hover:bg-gray-50 dark:hover:bg-neutral-900 transition-all"
+                    >
+                      <ChevronLeft size={18} /> Back
+                    </button>
+                  )}
 
-                {step < 4 ? (
-                  <Button onClick={handleNext} className="flex-[2] gap-2 py-4 shadow-xl">
-                    Continue <ChevronRight size={18} />
-                  </Button>
-                ) : (
-                  <Button onClick={handleSubscribe} className="flex-[2] gap-3 py-4 text-lg shadow-2xl">
-                    <Send className="w-5 h-5" /> Confirm Membership
-                  </Button>
-                )}
+                  {step < 4 ? (
+                    <Button onClick={handleNext} className="flex-[2] gap-2 py-4 shadow-xl">
+                      Continue <ChevronRight size={18} />
+                    </Button>
+                  ) : (
+                    <Button onClick={handleSubscribe} className="flex-[2] gap-3 py-4 text-lg shadow-2xl">
+                      <Send className="w-5 h-5" /> Confirm Membership
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
         </motion.div>
       </div>
     </AnimatePresence>
