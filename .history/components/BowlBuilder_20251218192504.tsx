@@ -115,13 +115,9 @@ const BowlBuilder: React.FC = () => {
 
     if (!address.trim()) {
   setErrorMsg('Please enter your delivery address to proceed.');
-const input = document.querySelector<HTMLInputElement>(
-  'input[placeholder="Delivery Location / Landmark *"]'
-);
-
-input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-input?.focus();
-
+  const input = document.querySelector('input[placeholder="Delivery Location / Landmark..."]');
+  input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  input?.focus();
   return;
 }
 
@@ -426,19 +422,11 @@ input?.focus();
 
                   <div className="space-y-4 mb-8">
                     <div className="relative group">
-<input 
-  value={address}
-  onChange={e => setAddress(e.target.value)}
-  placeholder="Delivery Location / Landmark *"
-  className={`w-full bg-white/10 border p-5 rounded-2xl text-sm outline-none transition-all
-    ${!address.trim() && errorMsg
-      ? 'border-red-500 focus:ring-red-500'
-      : 'border-white/10 focus:ring-brand-orange'
-    }
-  `}
-  required
-/>
-
+                       <input 
+                        value={address} onChange={e => setAddress(e.target.value)}
+                        placeholder="Delivery Location / Landmark..." 
+                        className="w-full bg-white/10 border border-white/10 p-5 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-brand-orange transition-all placeholder:text-gray-500 group-hover:bg-white/15"
+                      />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <Button onClick={handleWhatsAppOrder} className="gap-2 py-5 text-sm font-black uppercase tracking-widest shadow-brand-orange/20">

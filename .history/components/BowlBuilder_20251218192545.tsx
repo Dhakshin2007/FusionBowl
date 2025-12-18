@@ -115,13 +115,9 @@ const BowlBuilder: React.FC = () => {
 
     if (!address.trim()) {
   setErrorMsg('Please enter your delivery address to proceed.');
-const input = document.querySelector<HTMLInputElement>(
-  'input[placeholder="Delivery Location / Landmark *"]'
-);
-
-input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-input?.focus();
-
+  const input = document.querySelector('input[placeholder="Delivery Location / Landmark..."]');
+  input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  input?.focus();
   return;
 }
 
