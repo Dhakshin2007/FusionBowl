@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, Info, Send, EyeOff, SlidersHorizontal, ListChecks, Star, ChevronRight, ChevronLeft, LayoutGrid, Sparkles, ArrowDown } from 'lucide-react';
+import { X, Check, Info, Send, EyeOff, SlidersHorizontal, ListChecks, Star, ChevronRight, ChevronLeft, LayoutGrid, Sparkles } from 'lucide-react';
 import { PLAN_FEATURES, PLAN_CATEGORIES_MAP, SIZE_DETAILS, PRICING_MATRIX, SUB_MENU_ITEMS, PlanType, PlanDuration, PlanSize } from '../constants';
 import Button from './Button';
 
@@ -14,44 +14,20 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
   const [duration, setDuration] = useState<PlanDuration>('15 Days');
   const [planType, setPlanType] = useState<PlanType>('Standard');
   const [size, setSize] = useState<PlanSize>('Compact');
-  const [showScrollHint, setShowScrollHint] = useState(true);
   
-  // Ref for the scrollable container to reset scroll on step change
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
   // State for excluded items: Record<CategoryName, ItemName[]>
   const [exclusions, setExclusions] = useState<Record<string, string[]>>({});
-
-  // Reset scroll to top whenever the step changes
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTo({ top: 0, behavior: 'instant' });
-    }
-  }, [step]);
-
-  // Handle scroll hint visibility
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.currentTarget;
-    if (target.scrollTop > 50) {
-      setShowScrollHint(false);
-    } else {
-      setShowScrollHint(true);
-    }
-  };
 
   // Prevent background scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
-      document.documentElement.style.overflow = 'unset';
       setStep(1); // Reset step when closed
     }
     return () => {
       document.body.style.overflow = 'unset';
-      document.documentElement.style.overflow = 'unset';
     };
   }, [isOpen]);
 
@@ -98,9 +74,10 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
 
     window.open(`https://wa.me/917207003062?text=${message}`, '_blank');
   };
+
   const stepVariants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 30 : -30,
+      x: direction > 0 ? 50 : -50,
       opacity: 0
     }),
     center: {
@@ -110,7 +87,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 30 : -30,
+      x: direction < 0 ? 50 : -50,
       opacity: 0
     })
   };
@@ -131,10 +108,10 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: '100%', opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="relative bg-white dark:bg-neutral-950 md:rounded-[3rem] shadow-2xl w-full max-w-4xl h-full md:h-auto md:max-h-[95vh] overflow-hidden flex flex-col"
+          className="relative bg-white dark:bg-neutral-950 md:rounded-[3rem] shadow-2xl w-full max-w-4xl h-full md:h-auto md:max-h-[90vh] overflow-hidden flex flex-col"
         >
           {/* Top Progress Header */}
-          <div className="flex flex-col border-b border-gray-100 dark:border-neutral-800 shrink-0">
+          <div className="flex flex-col border-b border-gray-100 dark:border-neutral-800">
             <div className="flex justify-between items-center p-6 pb-4">
               <div className="flex items-center gap-3">
                  <img 
@@ -166,11 +143,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
           </div>
 
           {/* Stepper Content */}
-          <div 
-            ref={scrollContainerRef}
-            onScroll={handleScroll}
-            className="flex-grow overflow-y-auto custom-scrollbar p-6 md:p-10 relative"
-          >
+          <div className="flex-grow overflow-y-auto custom-scrollbar p-6 md:p-10">
             <AnimatePresence mode="wait" custom={step}>
               <motion.div
                 key={step}
@@ -179,11 +152,11 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ duration: 0.25, ease: "easeInOut" }}
+                transition={{ duration: 0.3 }}
                 className="max-w-2xl mx-auto h-full"
               >
                 {step === 1 && (
-                  <div className="space-y-8 pb-12">
+                  <div className="space-y-8">
                     <div className="text-center md:text-left">
                       <div className="inline-flex items-center gap-2 text-brand-orange mb-2">
                         <ListChecks className="w-5 h-5" />
@@ -241,31 +214,11 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                         )
                       })}
                     </div>
-
-                    {/* Scroll Down Hint specifically for Step 1 */}
-                    <AnimatePresence>
-                      {showScrollHint && (
-                        <motion.div 
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="flex flex-col items-center gap-2 pt-8 text-gray-400 dark:text-gray-600"
-                        >
-                          <span className="text-[10px] font-bold uppercase tracking-widest">Scroll to see details</span>
-                          <motion.div 
-                            animate={{ y: [0, 5, 0] }}
-                            transition={{ repeat: Infinity, duration: 1.5 }}
-                          >
-                            <ArrowDown size={16} />
-                          </motion.div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
                   </div>
                 )}
 
                 {step === 2 && (
-                  <div className="space-y-10 pb-12">
+                  <div className="space-y-10">
                     <div className="text-center md:text-left">
                       <div className="inline-flex items-center gap-2 text-brand-orange mb-2">
                         <LayoutGrid className="w-5 h-5" />
@@ -337,7 +290,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                 )}
 
                 {step === 3 && (
-                  <div className="space-y-8 flex flex-col h-full pb-12">
+                  <div className="space-y-8 flex flex-col h-full">
                      <div className="text-center md:text-left">
                         <div className="inline-flex items-center gap-2 text-brand-orange mb-2">
                           <SlidersHorizontal className="w-5 h-5" />
@@ -392,7 +345,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
           </div>
 
           {/* Stepper Navigation Footer */}
-          <div className="p-6 md:p-8 border-t border-gray-100 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-[0_-20px_50px_rgba(0,0,0,0.05)] shrink-0">
+          <div className="p-6 md:p-8 border-t border-gray-100 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-[0_-20px_50px_rgba(0,0,0,0.05)]">
             <div className="max-w-2xl mx-auto">
               <div className="flex justify-between items-end mb-8">
                  <div>

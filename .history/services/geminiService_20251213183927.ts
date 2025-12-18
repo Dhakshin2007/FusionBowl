@@ -1,11 +1,20 @@
 import { GoogleGenAI } from "@google/genai";
 import { Ingredient } from "../types";
 
-/**
- * Analyzes the nutritional benefits of the selected bowl ingredients using Google Gemini AI.
- * Uses the latest gemini-3-flash-preview model for efficient and high-quality analysis.
- */
+const apiKey = process.env.API_KEY || '';
+
+// Initialize safely - if no key is present, we handle it in the function call
+let ai: GoogleGenAI | null = null;
+if (apiKey) {
+  ai = new GoogleGenAI({ apiKey });
+}
+
 export const analyzeBowlNutrition = async (ingredients: Ingredient[]): Promise<string> => {
+  if (!ai) {
+    console.warn("Gemini API Key is missing.");
+    return "AI Analysis unavailable in demo mode. Please add a valid API_KEY.";
+  }
+
   const ingredientList = ingredients.map(i => i.name).join(', ');
   const prompt = `
     I have a fruit bowl with the following ingredients: ${ingredientList}.
@@ -17,16 +26,11 @@ export const analyzeBowlNutrition = async (ingredients: Ingredient[]): Promise<s
   `;
 
   try {
-    // Initialize a new GoogleGenAI instance directly using the pre-configured API key
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    
-    // Call generateContent with both the model name and prompt parts
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2.5-flash',
       contents: prompt,
     });
     
-    // Access the generated text using the .text property (not a method)
     return response.text || "Enjoy your fresh and healthy Fusion Bowl!";
   } catch (error) {
     console.error("Gemini API Error:", error);

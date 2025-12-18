@@ -86,10 +86,10 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
     message += `*Price:* ₹${currentPrice}%0A%0A`;
     message += `Please confirm my subscription.%0A%0A`;
 
-    const hasExclusions = Object.values(exclusions).some((list: string[]) => list.length > 0);
+    const hasExclusions = Object.values(exclusions).some(list => list.length > 0);
     if (hasExclusions) {
       message += `*My Preferences (Exclusions):*%0A`;
-      Object.entries(exclusions).forEach(([category, items]: [string, string[]]) => {
+      Object.entries(exclusions).forEach(([category, items]) => {
         if (items.length > 0) {
           message += `Excluding ${items.join(', ')} in ${category}%0A`;
         }
@@ -98,6 +98,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
 
     window.open(`https://wa.me/917207003062?text=${message}`, '_blank');
   };
+
   const stepVariants = {
     enter: (direction: number) => ({
       x: direction > 0 ? 30 : -30,
