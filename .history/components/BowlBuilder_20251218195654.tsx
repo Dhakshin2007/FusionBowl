@@ -277,7 +277,23 @@ input?.focus();
         </div>
 
         {(selectedPack || Object.keys(selectedJuices).length > 0) && (
-          <div className="grid lg:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
+<div className="grid lg:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
+
+  {/* LEFT COLUMN */}
+  {(!isMobile || !selectedPack) && (
+    <PlatterVisualizer />   // existing visualizer block
+  )}
+
+  {/* RIGHT COLUMN */}
+  <CategorySelector />     // existing selector block
+
+  {/* MOBILE: show visualizer AFTER selection */}
+  {isMobile && selectedPack && Object.keys(selections).length > 0 && (
+    <PlatterVisualizer />
+  )}
+
+</div>
+
             
             <div className="bg-white dark:bg-neutral-900 rounded-[3.5rem] p-8 md:p-12 shadow-2xl border border-gray-100 dark:border-white/5 relative overflow-hidden">
                <div className="flex justify-between items-center mb-12">

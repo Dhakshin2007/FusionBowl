@@ -47,16 +47,6 @@ const BowlBuilder: React.FC = () => {
     setAiAnalysis('');
   };
 
-  const [isMobile, setIsMobile] = useState(false);
-
-useEffect(() => {
-  const check = () => setIsMobile(window.innerWidth < 768);
-  check();
-  window.addEventListener('resize', check);
-  return () => window.removeEventListener('resize', check);
-}, []);
-
-
   const handleToggleJuice = (juiceId: string, size: 'Shot' | 'Standard', delta: number) => {
     const key = `${juiceId}:${size}`;
     setSelectedJuices(prev => {
@@ -175,18 +165,10 @@ input?.focus();
               className={`absolute top-0 left-1/2 -ml-0.5 h-1/2 w-1 origin-bottom transition-all cursor-pointer z-10`}
               style={{ rotate: `${i * angle}deg` }}
             >
-<div
-  className={`absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 md:w-14 md:h-14
-    rounded-full flex items-center justify-center border-2 shadow-sm transition-all
-    ${isSelected
-      ? 'bg-brand-orange border-brand-orange text-white'
-      : isCurrent
-      ? 'bg-white dark:bg-neutral-800 border-brand-orange scale-110 shadow-lg'
-      : 'bg-gray-50 dark:bg-neutral-900 border-gray-100 dark:border-white/10 text-gray-400'
-    }`}
-  style={{ transform: `translateX(-50%) rotate(-${i * angle}deg)` }}
->
-
+              <div className={`absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center border-2 shadow-sm transition-all ${
+                isSelected ? 'bg-brand-orange border-brand-orange text-white' : 
+                isCurrent ? 'bg-white dark:bg-neutral-800 border-brand-orange scale-110 shadow-lg' : 'bg-gray-50 dark:bg-neutral-900 border-gray-100 dark:border-white/10 text-gray-400'
+              }`}>
                 {isSelected ? <Check size={18} /> : <span className="text-xs font-black">{i + 1}</span>}
               </div>
               

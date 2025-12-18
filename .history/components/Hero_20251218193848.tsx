@@ -62,7 +62,7 @@ const Hero: React.FC = () => {
             </span>
           </h1>
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-lg leading-relaxed">
-            Experience the fusion of health and luxury. Customize your daily dose of Nutritions with our Fresh, Premium Quality, Hand picked fruits.
+            Experience the fusion of health and luxury. Customize your daily dose of Nutritions with our Premium Quality, hand-picked fruits.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <a href={`#${SectionId.BUILDER}`}>

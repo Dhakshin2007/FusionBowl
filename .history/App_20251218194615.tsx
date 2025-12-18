@@ -12,7 +12,7 @@ import { SERVICES, TESTIMONIALS } from './constants';
 import { SectionId } from './types';
 import Button from './components/Button';
 import { motion, Variants } from 'framer-motion';
-import { Truck, MapPin, Clock, Phone, Mail, Instagram, Facebook, Code, CalendarHeart, Box, ChefHat, ArrowDown, HandHeart } from 'lucide-react';
+import { Truck, MapPin, Clock, Phone, Mail, Instagram, Facebook, Code, CalendarHeart, Box, ChefHat, ArrowDown } from 'lucide-react';
 
 const App: React.FC = () => {
   const [isSubModalOpen, setIsSubModalOpen] = useState(false);

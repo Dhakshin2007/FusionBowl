@@ -47,16 +47,6 @@ const BowlBuilder: React.FC = () => {
     setAiAnalysis('');
   };
 
-  const [isMobile, setIsMobile] = useState(false);
-
-useEffect(() => {
-  const check = () => setIsMobile(window.innerWidth < 768);
-  check();
-  window.addEventListener('resize', check);
-  return () => window.removeEventListener('resize', check);
-}, []);
-
-
   const handleToggleJuice = (juiceId: string, size: 'Shot' | 'Standard', delta: number) => {
     const key = `${juiceId}:${size}`;
     setSelectedJuices(prev => {
@@ -186,7 +176,9 @@ input?.focus();
     }`}
   style={{ transform: `translateX(-50%) rotate(-${i * angle}deg)` }}
 >
-
+                isSelected ? 'bg-brand-orange border-brand-orange text-white' : 
+                isCurrent ? 'bg-white dark:bg-neutral-800 border-brand-orange scale-110 shadow-lg' : 'bg-gray-50 dark:bg-neutral-900 border-gray-100 dark:border-white/10 text-gray-400'
+              }`}>
                 {isSelected ? <Check size={18} /> : <span className="text-xs font-black">{i + 1}</span>}
               </div>
               

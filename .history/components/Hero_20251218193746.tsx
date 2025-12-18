@@ -62,7 +62,7 @@ const Hero: React.FC = () => {
             </span>
           </h1>
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-lg leading-relaxed">
-            Experience the fusion of health and luxury. Customize your daily dose of Nutritions with our Fresh, Premium Quality, Hand picked fruits.
+            Experience the fusion of health and luxury. Customize your daily dose of vitamins with our premium, hand-picked fruits.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <a href={`#${SectionId.BUILDER}`}>
@@ -91,7 +91,7 @@ const Hero: React.FC = () => {
                     <defs>
                     <path id="textCircle" d="M 100, 100 m -85, 0 a 85,85 0 1,1 170,0 a 85,85 0 1,1 -170,0" />
                     </defs>
-                    <text className="font-serif font-bold uppercase tracking-[0.25em] fill-current text-brand-dark dark:text-brand-cream text-[12.3px]">
+                    <text className="font-serif font-bold uppercase tracking-[0.25em] fill-current text-brand-dark dark:text-brand-cream text-[12.5px]">
                     <textPath href="#textCircle" startOffset="0%">
                         {/* Fusion Bowl • Hygiene •  Royal Love • Quality  */}
                         Customization is the Key • Customization is the Key • 

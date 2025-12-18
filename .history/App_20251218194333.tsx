@@ -12,7 +12,7 @@ import { SERVICES, TESTIMONIALS } from './constants';
 import { SectionId } from './types';
 import Button from './components/Button';
 import { motion, Variants } from 'framer-motion';
-import { Truck, MapPin, Clock, Phone, Mail, Instagram, Facebook, Code, CalendarHeart, Box, ChefHat, ArrowDown, HandHeart } from 'lucide-react';
+import { Truck, MapPin, Clock, Phone, Mail, Instagram, Facebook, Code, CalendarHeart, Box, ChefHat, ArrowDown } from 'lucide-react';
 
 const App: React.FC = () => {
   const [isSubModalOpen, setIsSubModalOpen] = useState(false);
@@ -87,12 +87,12 @@ const App: React.FC = () => {
                 
                 <div className="grid grid-cols-2 gap-4 pt-4">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg text-green-600 dark:text-green-400"><HandHeart size={20} /></div>
+                    <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg text-green-600 dark:text-green-400"><Truck size={20} /></div>
                     <span className="font-medium dark:text-gray-300">Hand Picked with Love </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400"><Clock size={20} /></div>
-                    <span className="font-medium dark:text-gray-300">Freshly Prepared </span>
+                    <span className="font-medium dark:text-gray-300">Freshly Prepared 🎀</span>
                   </div>
                 </div>
               </motion.div>
