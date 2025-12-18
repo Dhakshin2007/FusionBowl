@@ -130,14 +130,14 @@ export const PLAN_FEATURES = {
     '2 Premium Fruits',
     'Mixed Veggie/Boiled Veggie',
     'Mixed Sprouts',
-    'Boiled Egg/Soaked Seeds'
+    'Boiled Egg'
   ],
   Signature: [
     '2 Basic Fruits',
     '2 Premium Fruits',
     '1 Exotic Fruit',
     'Mixed Sprouts',
-    'Mixed Dry Fruit Set/Mixed Seeds',
+    'Mixed Dry Fruit Set'
   ]
 };
 

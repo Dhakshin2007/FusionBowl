@@ -33,7 +33,7 @@ const Hero: React.FC = () => {
     // Background / Blurred
     { emoji: '🍎', bottom: '-5%', left: '40%', size: 'text-4xl', style: { y: yUp }, z: 10, blur: false },
     { emoji: '🍏', top: '-5%', left: '50%', size: 'text-3xl', animate: { y: [0, 10, 0] }, duration: 7, z: 0, blur: false },
-  //   { emoji: '🍊', top: '40%', right: '5%', size: 'text-7xl md:text-8xl', animate: { scale: [1, 1.1, 1] }, duration: 8, z: 0, blur: true },
+    { emoji: '🍊', top: '40%', right: '5%', size: 'text-7xl md:text-8xl', animate: { scale: [1, 1.1, 1] }, duration: 8, z: 0, blur: true },
   ];
 
   return (
@@ -52,8 +52,8 @@ const Hero: React.FC = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-left"
         >
-          <span className="inline-block px-4 py-1.5 mb-6 rounded-full bg-orange-100 dark:bg-orange-900/30 text-brand-orange font-semibold text-sm tracking-wide border border-orange-600 dark:border-orange-500/20">
-            #1 Premium Fruit Service in NRT
+          <span className="inline-block px-4 py-1.5 mb-6 rounded-full bg-orange-100 dark:bg-orange-900/30 text-brand-orange font-semibold text-sm tracking-wide border border-orange-100 dark:border-orange-500/20">
+            #1 Premium Fruit Bowls in NRT
           </span>
           <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight text-brand-dark dark:text-brand-cream mb-6">
             Freshness You Can <br/>
@@ -89,12 +89,12 @@ const Hero: React.FC = () => {
             >
                 <svg viewBox="0 0 200 200" className="w-full h-full overflow-visible">
                     <defs>
-                    <path id="textCircle" d="M 100, 100 m -85, 0 a 85,85 0 1,1 170,0 a 85,85 0 1,1 -170,0" />
+                    <path id="textCircle" d="M 90, 100 m -85, 0 a 85,85 0 1,1 170,0 a 85,85 0 1,1 -170,0" />
                     </defs>
-                    <text className="font-serif font-bold uppercase tracking-[0.25em] fill-current text-brand-dark dark:text-brand-cream text-[12.5px]">
+                    <text className="font-serif font-bold uppercase tracking-[0.25em] fill-current text-brand-dark dark:text-brand-cream text-[13px]">
                     <textPath href="#textCircle" startOffset="0%">
                         {/* Fusion Bowl • Hygiene •  Royal Love • Quality  */}
-                        Customization is the Key • Premium Quality • Fresh • 
+                        Customization is the Key • Premium Quality • 
                     </textPath>
                     </text>
                 </svg>
@@ -111,12 +111,9 @@ const Hero: React.FC = () => {
                   <img 
                     src="https://i.postimg.cc/SxPbst4r/Fusion-Bowl-PNG-(Bg-removed).png" 
                     alt="Fusion Bowl Logo"
-                    className="w-53 h-auto object-contain mb-4 animate-pulse-slow"
+                    className="w-48 h-auto object-contain mb-4 animate-pulse-slow"
                   />
-                  <p className="font-serif italic font-medium text-lg text-brand-dark dark:text-brand-cream mt-2">
-                    {/* Customization is the Key */}
-
-                  </p>
+                  <p className="font-serif italic font-medium text-lg text-brand-dark dark:text-brand-cream mt-2">Customization is the Key</p>
                </div>
             </motion.div>
 

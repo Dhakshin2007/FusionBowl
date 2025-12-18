@@ -120,24 +120,25 @@ export const SIGNATURE_BOWLS = [
 export const PLAN_FEATURES = {
   Standard: [
     '3 Basic Fruits',
-    '1 Premium Fruit',
-    'Mixed Veggie',
+    
+    'Mixed Veggies',
+    'Boiled Veggie',
     'Mixed Sprouts',
     'Boiled Egg'
   ],
   Essential: [
     '2 Basic Fruits',
     '2 Premium Fruits',
-    'Mixed Veggie/Boiled Veggie',
+    'Mixed Veggies',
     'Mixed Sprouts',
-    'Boiled Egg/Soaked Seeds'
+    'Boiled Egg'
   ],
   Signature: [
     '2 Basic Fruits',
     '2 Premium Fruits',
     '1 Exotic Fruit',
     'Mixed Sprouts',
-    'Mixed Dry Fruit Set/Mixed Seeds',
+    'Mixed Dry Fruit Set'
   ]
 };
 

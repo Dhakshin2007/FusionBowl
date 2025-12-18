@@ -137,7 +137,7 @@ export const PLAN_FEATURES = {
     '2 Premium Fruits',
     '1 Exotic Fruit',
     'Mixed Sprouts',
-    'Mixed Dry Fruit Set/Mixed Seeds',
+    'Mixed Dry Fruit Set'
   ]
 };
 

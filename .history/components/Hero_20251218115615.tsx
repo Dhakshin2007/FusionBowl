@@ -52,8 +52,8 @@ const Hero: React.FC = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-left"
         >
-          <span className="inline-block px-4 py-1.5 mb-6 rounded-full bg-orange-100 dark:bg-orange-900/30 text-brand-orange font-semibold text-sm tracking-wide border border-orange-600 dark:border-orange-500/20">
-            #1 Premium Fruit Service in NRT
+          <span className="inline-block px-4 py-1.5 mb-6 rounded-full bg-orange-100 dark:bg-orange-900/30 text-brand-orange font-semibold text-sm tracking-wide border border-orange-100 dark:border-orange-700/20">
+            #1 Premium Fruit Bowls in NRT
           </span>
           <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight text-brand-dark dark:text-brand-cream mb-6">
             Freshness You Can <br/>

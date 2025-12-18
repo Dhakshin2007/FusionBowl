@@ -16,8 +16,8 @@ export const INGREDIENTS: Ingredient[] = [
   { id: 'banana', name: 'Banana', category: 'fruit', price: 60, calories: 89, color: 'bg-yellow-200', emoji: '🍌' },
   { id: 'orange', name: 'Orange', category: 'fruit', price: 80, calories: 47, color: 'bg-orange-500', emoji: '🍊' },
   { id: 'guava', name: 'Guava', category: 'fruit', price: 60, calories: 68, color: 'bg-green-400', emoji: '🍏' },
-  { id: 'strawberry', name: 'Strawberry', category: 'fruit', price: 400, calories: 32, color: 'bg-red-500', emoji: '🍓' },
-  { id: 'mango', name: 'Mango (Seasonal)', category: 'fruit', price: 150, calories: 60, color: 'bg-yellow-500', emoji: '🥭' },
+  // { id: 'strawberry', name: 'Strawberry', category: 'fruit', price: 400, calories: 32, color: 'bg-red-500', emoji: '🍓' },
+  // { id: 'mango', name: 'Mango (Seasonal)', category: 'fruit', price: 150, calories: 60, color: 'bg-yellow-500', emoji: '🥭' },
 
   // Vegetables (Salad Base)
   { id: 'beetroot', name: 'Beetroot', category: 'vegetable', price: 50, calories: 43, color: 'bg-pink-800', emoji: '🟣' },
@@ -120,24 +120,24 @@ export const SIGNATURE_BOWLS = [
 export const PLAN_FEATURES = {
   Standard: [
     '3 Basic Fruits',
-    '1 Premium Fruit',
-    'Mixed Veggie',
+    'Mixed Veggies',
+    'Boiled Veggie',
     'Mixed Sprouts',
     'Boiled Egg'
   ],
   Essential: [
     '2 Basic Fruits',
     '2 Premium Fruits',
-    'Mixed Veggie/Boiled Veggie',
+    'Mixed Veggies',
     'Mixed Sprouts',
-    'Boiled Egg/Soaked Seeds'
+    'Boiled Egg'
   ],
   Signature: [
     '2 Basic Fruits',
     '2 Premium Fruits',
     '1 Exotic Fruit',
     'Mixed Sprouts',
-    'Mixed Dry Fruit Set/Mixed Seeds',
+    'Mixed Dry Fruit Set'
   ]
 };
 
