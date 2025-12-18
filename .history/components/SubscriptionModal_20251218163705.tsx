@@ -331,7 +331,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                             >
                               <div className="flex flex-col">
                                 <span className="text-xl">{s}</span>
-                                <span className={`text-[11px] font-medium opacity-100 ${size === s ? 'text-black' : 'text-gray-400'}`}>
+                                <span className={`text-[11px] font-medium opacity-80 ${size === s ? 'text-white' : 'text-black-400'}`}>
                                   {SIZE_DETAILS[s]}
                                 </span>
                               </div>

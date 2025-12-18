@@ -325,13 +325,13 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                               key={s}
                               onClick={() => setSize(s)}
                               className={`p-6 rounded-[2rem] font-bold transition-all border-2 text-left flex justify-between items-center group ${size === s
-                                ? 'bg-brand-green border-brand-green text-white shadow-xl shadow-green-500/10'
+                                ? 'bg-brand-green border-brand-green text-white shadow-xl shadow-green-500/20'
                                 : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-green/30'
                                 }`}
                             >
                               <div className="flex flex-col">
                                 <span className="text-xl">{s}</span>
-                                <span className={`text-[11px] font-medium opacity-100 ${size === s ? 'text-black' : 'text-gray-400'}`}>
+                                <span className={`text-[11px] font-medium opacity-80 ${size === s ? 'text-white' : 'text-gray-400'}`}>
                                   {SIZE_DETAILS[s]}
                                 </span>
                               </div>
@@ -497,7 +497,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                     </span>
                   </div>
                 )}
-                </div>
+                <div
 
 
                 <div className="flex gap-3">

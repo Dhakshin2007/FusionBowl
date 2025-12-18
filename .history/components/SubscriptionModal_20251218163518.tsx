@@ -243,7 +243,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-6">
                               {PLAN_FEATURES[type].map((feat, i) => (
                                 <li key={i} className="flex items-center gap-2.5 text-xs md:text-sm text-gray-600 dark:text-gray-400">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-brand-green flex-shrink-0" />
+                                  <div className="w-1.5 h-1.5 rounded-full bg-brand-orangen flex-shrink-0" />
                                   {feat}
                                 </li>
                               ))}
@@ -325,17 +325,17 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                               key={s}
                               onClick={() => setSize(s)}
                               className={`p-6 rounded-[2rem] font-bold transition-all border-2 text-left flex justify-between items-center group ${size === s
-                                ? 'bg-brand-green border-brand-green text-white shadow-xl shadow-green-500/10'
-                                : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-green/30'
+                                ? 'bg-brand-orangen border-brand-orangen text-white shadow-xl shadow-orangen-500/10'
+                                : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-orangen/30'
                                 }`}
                             >
                               <div className="flex flex-col">
                                 <span className="text-xl">{s}</span>
-                                <span className={`text-[11px] font-medium opacity-100 ${size === s ? 'text-black' : 'text-gray-400'}`}>
+                                <span className={`text-[11px] font-medium opacity-80 ${size === s ? 'text-white' : 'text-gray-400'}`}>
                                   {SIZE_DETAILS[s]}
                                 </span>
                               </div>
-                              <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${size === s ? 'bg-white text-brand-green border-white scale-110 shadow-lg' : 'border-gray-100 dark:border-neutral-800'}`}>
+                              <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${size === s ? 'bg-white text-brand-orangen border-white scale-110 shadow-lg' : 'border-gray-100 dark:border-neutral-800'}`}>
                                 {size === s && <Check className="w-5 h-5" />}
                               </div>
                             </button>

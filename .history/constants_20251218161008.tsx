@@ -215,9 +215,8 @@ export const TESTIMONIALS = [
     name: "Dhakshin",
     role: "Student",
     text: "Finally, a healthy option that isn't boring. The student discount for subscriptions is a lifesaver!",
-    rating: 5
+    rating: 6
   }
-  
 ];
 
 export const NAV_LINKS = [

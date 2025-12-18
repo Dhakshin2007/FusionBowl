@@ -331,11 +331,11 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                             >
                               <div className="flex flex-col">
                                 <span className="text-xl">{s}</span>
-                                <span className={`text-[11px] font-medium opacity-100 ${size === s ? 'text-black' : 'text-gray-400'}`}>
+                                <span className={`text-[11px] font-medium opacity-100 ${size === s ? 'text-black' : 'text-black-400'}`}>
                                   {SIZE_DETAILS[s]}
                                 </span>
                               </div>
-                              <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${size === s ? 'bg-white text-brand-green border-white scale-110 shadow-lg' : 'border-gray-100 dark:border-neutral-800'}`}>
+                              <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${size === s ? 'bg-white text-brand-green border-white scale-110 shadow-lg' : 'border-black-100 dark:border-neutral-800'}`}>
                                 {size === s && <Check className="w-5 h-5" />}
                               </div>
                             </button>

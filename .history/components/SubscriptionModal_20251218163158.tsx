@@ -224,8 +224,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                             whileHover={{ scale: 1.01, borderColor: '#FF8C42' }}
                             whileTap={{ scale: 0.98 }}
                             className={`group relative p-6 rounded-[2.5rem] border-2 cursor-pointer transition-all duration-300 ${isActive
-                              ? 'bg-white dark:bg-neutral-900 border-brand-orange shadow-2xl shadow-orange-500/10'
-                              : 'bg-gray-50/50 dark:bg-neutral-900/30 border-transparent hover:bg-white dark:hover:bg-neutral-900'
+                                ? 'bg-white dark:bg-neutral-900 border-brand-orange shadow-2xl shadow-orange-500/10'
+                                : 'bg-gray-50/50 dark:bg-neutral-900/30 border-transparent hover:bg-white dark:hover:bg-neutral-900'
                               }`}
                           >
                             <div className="flex justify-between items-start mb-4">
@@ -302,8 +302,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                                 key={d}
                                 onClick={() => setDuration(d)}
                                 className={`group p-6 rounded-3xl font-bold transition-all border-2 text-center relative overflow-hidden ${duration === d
-                                  ? 'bg-brand-orange border-brand-orange text-white shadow-xl shadow-orange-500/20 scale-[1.02]'
-                                  : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-orange/30'
+                                    ? 'bg-brand-orange border-brand-orange text-white shadow-xl shadow-orange-500/20 scale-[1.02]'
+                                    : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-orange/30'
                                   }`}
                               >
                                 <span className="relative z-10 block text-lg">{d}</span>
@@ -325,13 +325,13 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                               key={s}
                               onClick={() => setSize(s)}
                               className={`p-6 rounded-[2rem] font-bold transition-all border-2 text-left flex justify-between items-center group ${size === s
-                                ? 'bg-brand-green border-brand-green text-white shadow-xl shadow-green-500/10'
-                                : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-green/30'
+                                  ? 'bg-brand-green border-brand-green text-white shadow-xl shadow-green-500/20'
+                                  : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-green/30'
                                 }`}
                             >
                               <div className="flex flex-col">
                                 <span className="text-xl">{s}</span>
-                                <span className={`text-[11px] font-medium opacity-100 ${size === s ? 'text-black' : 'text-gray-400'}`}>
+                                <span className={`text-[11px] font-medium opacity-80 ${size === s ? 'text-white' : 'text-gray-400'}`}>
                                   {SIZE_DETAILS[s]}
                                 </span>
                               </div>
@@ -377,8 +377,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                               key={slot}
                               onClick={() => setTimeSlot(slot)}
                               className={`p-3 rounded-2xl font-bold text-sm transition-all border-2 ${timeSlot === slot
-                                ? 'bg-brand-orange border-brand-orange text-white shadow-lg shadow-orange-500/20'
-                                : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-brand-orange/30'
+                                  ? 'bg-brand-orange border-brand-orange text-white shadow-lg shadow-orange-500/20'
+                                  : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-brand-orange/30'
                                 }`}
                             >
                               {slot}
@@ -396,8 +396,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                               key={slot}
                               onClick={() => setTimeSlot(slot)}
                               className={`p-3 rounded-2xl font-bold text-sm transition-all border-2 ${timeSlot === slot
-                                ? 'bg-brand-orange border-brand-orange text-white shadow-lg shadow-orange-500/20'
-                                : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-brand-orange/30'
+                                  ? 'bg-brand-orange border-brand-orange text-white shadow-lg shadow-orange-500/20'
+                                  : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-brand-orange/30'
                                 }`}
                             >
                               {slot}
@@ -442,8 +442,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                                     whileTap={{ scale: 0.95 }}
                                     onClick={() => toggleExclusion(catName, item.name)}
                                     className={`flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-xs font-bold border-2 transition-all duration-300 ${isExcluded
-                                      ? 'bg-gray-50 dark:bg-neutral-900 text-gray-400 border-dashed border-gray-200 dark:border-neutral-800'
-                                      : 'bg-white dark:bg-neutral-900 text-gray-700 dark:text-gray-200 border-gray-100 dark:border-neutral-800 hover:border-brand-orange shadow-sm'
+                                        ? 'bg-gray-50 dark:bg-neutral-900 text-gray-400 border-dashed border-gray-200 dark:border-neutral-800'
+                                        : 'bg-white dark:bg-neutral-900 text-gray-700 dark:text-gray-200 border-gray-100 dark:border-neutral-800 hover:border-brand-orange shadow-sm'
                                       }`}
                                   >
                                     <span className={`text-lg ${isExcluded ? 'grayscale opacity-30' : ''}`}>{item.emoji}</span>
@@ -480,48 +480,42 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                         <span className="text-sm text-gray-500">/{duration}</span>
                       </div>
                     </div>
-                  )}
+                  
 
                 </div>
 
-                {step !== 1 && (
-                  <div className="text-right hidden sm:block">
-                    <div className="flex items-center gap-2 bg-brand-orange/10 px-4 py-1.5 rounded-full border border-brand-orange/20 mb-1">
-                      <Star size={14} className="text-brand-orange fill-current" />
-                      <span className="font-black text-brand-orange uppercase text-[10px]">
-                        {planType} - {size}
-                      </span>
-                    </div>
-                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                      {currentWeight}
-                    </span>
+                <div className="text-right hidden sm:block">
+                  <div className="flex items-center gap-2 bg-brand-orange/10 px-4 py-1.5 rounded-full border border-brand-orange/20 mb-1">
+                    <Star size={14} className="text-brand-orange fill-current" />
+                    <span className="font-black text-brand-orange uppercase text-[10px]">{planType} - {size}</span>
                   </div>
-                )}
-                </div>
-
-
-                <div className="flex gap-3">
-                  {step > 1 && (
-                    <button
-                      onClick={handleBack}
-                      className="flex-1 flex items-center justify-center gap-2 py-4 rounded-full border-2 border-gray-100 dark:border-neutral-800 font-bold text-gray-500 hover:bg-gray-50 dark:hover:bg-neutral-900 transition-all"
-                    >
-                      <ChevronLeft size={18} /> Back
-                    </button>
-                  )}
-
-                  {step < 4 ? (
-                    <Button onClick={handleNext} className="flex-[2] gap-2 py-4 shadow-xl">
-                      Continue <ChevronRight size={18} />
-                    </Button>
-                  ) : (
-                    <Button onClick={handleSubscribe} className="flex-[2] gap-3 py-4 text-lg shadow-2xl">
-                      <Send className="w-5 h-5" /> Confirm Membership
-                    </Button>
-                  )}
+                  <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{currentWeight}</span>
                 </div>
               </div>
+              
+
+              <div className="flex gap-3">
+                {step > 1 && (
+                  <button
+                    onClick={handleBack}
+                    className="flex-1 flex items-center justify-center gap-2 py-4 rounded-full border-2 border-gray-100 dark:border-neutral-800 font-bold text-gray-500 hover:bg-gray-50 dark:hover:bg-neutral-900 transition-all"
+                  >
+                    <ChevronLeft size={18} /> Back
+                  </button>
+                )}
+
+                {step < 4 ? (
+                  <Button onClick={handleNext} className="flex-[2] gap-2 py-4 shadow-xl">
+                    Continue <ChevronRight size={18} />
+                  </Button>
+                ) : (
+                  <Button onClick={handleSubscribe} className="flex-[2] gap-3 py-4 text-lg shadow-2xl">
+                    <Send className="w-5 h-5" /> Confirm Membership
+                  </Button>
+                )}
+              </div>
             </div>
+          </div>
         </motion.div>
       </div>
     </AnimatePresence>

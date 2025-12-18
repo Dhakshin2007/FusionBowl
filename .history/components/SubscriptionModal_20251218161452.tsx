@@ -18,7 +18,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
   const [size, setSize] = useState<PlanSize>('Compact');
   const [timeSlot, setTimeSlot] = useState<TimeSlot>('7:00 AM');
   const [showScrollHint, setShowScrollHint] = useState(true);
-
+  
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [exclusions, setExclusions] = useState<Record<string, string[]>>({});
 
@@ -74,10 +74,10 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
     setExclusions(prev => {
       const currentCategoryExclusions = prev[category] || [];
       const isExcluded = currentCategoryExclusions.includes(itemName);
-
+      
       return {
         ...prev,
-        [category]: isExcluded
+        [category]: isExcluded 
           ? currentCategoryExclusions.filter(i => i !== itemName)
           : [...currentCategoryExclusions, itemName]
       };
@@ -136,14 +136,14 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-6 lg:p-12">
-        <motion.div
+        <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
           className="absolute inset-0 bg-black/80 backdrop-blur-xl"
         />
-
+        
         <motion.div
           initial={{ y: '100%', opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -155,36 +155,36 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
           <div className="flex flex-col border-b border-gray-100 dark:border-neutral-800 shrink-0">
             <div className="flex justify-between items-center p-6 pb-4">
               <div className="flex items-center gap-3">
-                <img
-                  src="https://i.postimg.cc/SxPbst4r/Fusion-Bowl-PNG-(Bg-removed).png"
-                  alt="Logo"
-                  className="w-8 h-8 object-contain"
-                />
-                <span className="font-serif font-bold text-xl dark:text-brand-cream">
-                  Fusion<span className="text-brand-orange">Bowl</span>
-                </span>
+                 <img 
+                    src="https://i.postimg.cc/SxPbst4r/Fusion-Bowl-PNG-(Bg-removed).png" 
+                    alt="Logo" 
+                    className="w-8 h-8 object-contain"
+                 />
+                 <span className="font-serif font-bold text-xl dark:text-brand-cream">
+                    Fusion<span className="text-brand-orange">Bowl</span>
+                 </span>
               </div>
-              <button
-                onClick={onClose}
+              <button 
+                onClick={onClose} 
                 className="p-2 bg-gray-100 dark:bg-neutral-800 rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700 transition-colors"
               >
                 <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
-
+            
             {/* Step Indicators */}
             <div className="px-6 pb-4 flex items-center justify-center gap-2">
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className="flex items-center gap-2">
-                  <div className={`h-2 rounded-full transition-all duration-500 ${step >= i ? 'w-12 bg-brand-orange' : 'w-4 bg-gray-100 dark:bg-neutral-800'}`} />
-                  {i < 4 && <div className="w-2 h-0.5 bg-gray-200 dark:bg-neutral-800" />}
-                </div>
-              ))}
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="flex items-center gap-2">
+                    <div className={`h-2 rounded-full transition-all duration-500 ${step >= i ? 'w-12 bg-brand-orange' : 'w-4 bg-gray-100 dark:bg-neutral-800'}`} />
+                    {i < 4 && <div className="w-2 h-0.5 bg-gray-200 dark:bg-neutral-800" />}
+                  </div>
+                ))}
             </div>
           </div>
 
           {/* Stepper Content */}
-          <div
+          <div 
             ref={scrollContainerRef}
             onScroll={handleScroll}
             className="flex-grow overflow-y-auto custom-scrollbar p-6 md:p-10 relative"
@@ -215,25 +215,26 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                       {(Object.keys(PLAN_FEATURES) as PlanType[]).map((type) => {
                         const isActive = planType === type;
                         return (
-                          <motion.div
-                            key={type}
+                          <motion.div 
+                            key={type} 
                             onClick={() => {
-                              setPlanType(type);
-                              setExclusions({});
+                                setPlanType(type);
+                                setExclusions({}); 
                             }}
                             whileHover={{ scale: 1.01, borderColor: '#FF8C42' }}
                             whileTap={{ scale: 0.98 }}
-                            className={`group relative p-6 rounded-[2.5rem] border-2 cursor-pointer transition-all duration-300 ${isActive
-                              ? 'bg-white dark:bg-neutral-900 border-brand-orange shadow-2xl shadow-orange-500/10'
-                              : 'bg-gray-50/50 dark:bg-neutral-900/30 border-transparent hover:bg-white dark:hover:bg-neutral-900'
-                              }`}
+                            className={`group relative p-6 rounded-[2.5rem] border-2 cursor-pointer transition-all duration-300 ${
+                              isActive 
+                                ? 'bg-white dark:bg-neutral-900 border-brand-orange shadow-2xl shadow-orange-500/10' 
+                                : 'bg-gray-50/50 dark:bg-neutral-900/30 border-transparent hover:bg-white dark:hover:bg-neutral-900'
+                            }`}
                           >
                             <div className="flex justify-between items-start mb-4">
                               <div>
                                 <h4 className={`text-xl font-bold ${isActive ? 'text-brand-orange' : 'text-gray-800 dark:text-gray-200'}`}>
-                                  {type} Membership
+                                  {type} Plan
                                 </h4>
-                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Daily Rotation</p>
+                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Weekly Rotation</p>
                               </div>
                               <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${isActive ? 'border-brand-orange bg-brand-orange text-white scale-110 shadow-lg shadow-orange-500/20' : 'border-gray-200 dark:border-neutral-800'}`}>
                                 {isActive && <Check className="w-3.5 h-3.5" />}
@@ -248,11 +249,11 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                                 </li>
                               ))}
                             </ul>
-
+                            
                             {isActive && (
-                              <motion.div layoutId="active-plan-pill" className="absolute -right-2 -top-2 bg-brand-orange text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg">
-                                SELECTED
-                              </motion.div>
+                                <motion.div layoutId="active-plan-pill" className="absolute -right-2 -top-2 bg-brand-orange text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg">
+                                    SELECTED
+                                </motion.div>
                             )}
                           </motion.div>
                         )
@@ -261,16 +262,16 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
 
                     <AnimatePresence>
                       {showScrollHint && (
-                        <motion.div
+                        <motion.div 
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 10 }}
                           className="flex flex-col items-center gap-2 pt-8 text-gray-400 dark:text-gray-600"
                         >
                           <span className="text-[10px] font-bold uppercase tracking-widest">Scroll to see details</span>
-                          <motion.div
-                            animate={{ y: [0, 5, 0] }}
-                            transition={{ repeat: Infinity, duration: 1.5 }}
+                          <motion.div 
+                            animate={{ y: [5, 5, 0] }}
+                            transition={{ repeat: Infinity, duration: 5.5 }}
                           >
                             <ArrowDown size={16} />
                           </motion.div>
@@ -292,56 +293,58 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                     </div>
 
                     <div className="space-y-10">
-                      <div>
-                        <label className="block text-[10px] font-black uppercase text-brand-orange mb-4 tracking-[0.2em] px-1">Subscription Period</label>
-                        <div className="grid grid-cols-2 gap-4">
-                          {(['15 Days', '1 Month'] as PlanDuration[]).map((d) => {
-                            const days = d === '15 Days' ? 13 : 26;
-                            return (
-                              <button
-                                key={d}
-                                onClick={() => setDuration(d)}
-                                className={`group p-6 rounded-3xl font-bold transition-all border-2 text-center relative overflow-hidden ${duration === d
-                                  ? 'bg-brand-orange border-brand-orange text-white shadow-xl shadow-orange-500/20 scale-[1.02]'
-                                  : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-orange/30'
+                        <div>
+                          <label className="block text-[10px] font-black uppercase text-brand-orange mb-4 tracking-[0.2em] px-1">Subscription Period</label>
+                          <div className="grid grid-cols-2 gap-4">
+                            {(['15 Days', '1 Month'] as PlanDuration[]).map((d) => {
+                              const days = d === '15 Days' ? 13 : 26;
+                              return (
+                                <button
+                                  key={d}
+                                  onClick={() => setDuration(d)}
+                                  className={`group p-6 rounded-3xl font-bold transition-all border-2 text-center relative overflow-hidden ${
+                                    duration === d
+                                      ? 'bg-brand-orange border-brand-orange text-white shadow-xl shadow-orange-500/20 scale-[1.02]'
+                                      : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-orange/30'
                                   }`}
-                              >
-                                <span className="relative z-10 block text-lg">{d}</span>
-                                <span className={`text-[10px] font-medium mt-1 ${duration === d ? 'text-white/80' : 'text-gray-400'}`}>
-                                  {days} serving days
-                                </span>
-                                {duration === d && <Sparkles size={16} className="absolute top-2 right-2 opacity-50" />}
-                              </button>
-                            );
-                          })}
+                                >
+                                  <span className="relative z-10 block text-lg">{d}</span>
+                                  <span className={`text-[10px] font-medium mt-1 ${duration === d ? 'text-white/80' : 'text-gray-400'}`}>
+                                    {days} serving days
+                                  </span>
+                                  {duration === d && <Sparkles size={16} className="absolute top-2 right-2 opacity-50" />}
+                                </button>
+                              );
+                            })}
+                          </div>
                         </div>
-                      </div>
 
-                      <div>
-                        <label className="block text-[10px] font-black uppercase text-brand-orange mb-4 tracking-[0.2em] px-1">Meal Portion Size</label>
-                        <div className="grid grid-cols-1 gap-4">
-                          {(['Mini', 'Compact', 'Grand'] as PlanSize[]).map((s) => (
-                            <button
-                              key={s}
-                              onClick={() => setSize(s)}
-                              className={`p-6 rounded-[2rem] font-bold transition-all border-2 text-left flex justify-between items-center group ${size === s
-                                ? 'bg-brand-green border-brand-green text-white shadow-xl shadow-green-500/10'
-                                : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-green/30'
+                        <div>
+                          <label className="block text-[10px] font-black uppercase text-brand-orange mb-4 tracking-[0.2em] px-1">Meal Portion Size</label>
+                          <div className="grid grid-cols-1 gap-4">
+                            {(['Mini', 'Compact', 'Grand'] as PlanSize[]).map((s) => (
+                              <button
+                                key={s}
+                                onClick={() => setSize(s)}
+                                className={`p-6 rounded-[2rem] font-bold transition-all border-2 text-left flex justify-between items-center group ${
+                                  size === s
+                                    ? 'bg-brand-green border-brand-green text-white shadow-xl shadow-green-500/20'
+                                    : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-green/30'
                                 }`}
-                            >
-                              <div className="flex flex-col">
-                                <span className="text-xl">{s}</span>
-                                <span className={`text-[11px] font-medium opacity-100 ${size === s ? 'text-black' : 'text-gray-400'}`}>
-                                  {SIZE_DETAILS[s]}
-                                </span>
-                              </div>
-                              <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${size === s ? 'bg-white text-brand-green border-white scale-110 shadow-lg' : 'border-gray-100 dark:border-neutral-800'}`}>
-                                {size === s && <Check className="w-5 h-5" />}
-                              </div>
-                            </button>
-                          ))}
+                              >
+                                <div className="flex flex-col">
+                                  <span className="text-xl">{s}</span>
+                                  <span className={`text-[11px] font-medium opacity-80 ${size === s ? 'text-white' : 'text-gray-400'}`}>
+                                    {SIZE_DETAILS[s]}
+                                  </span>
+                                </div>
+                                <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${size === s ? 'bg-white text-brand-green border-white scale-110 shadow-lg' : 'border-gray-100 dark:border-neutral-800'}`}>
+                                    {size === s && <Check className="w-5 h-5" />}
+                                </div>
+                              </button>
+                            ))}
+                          </div>
                         </div>
-                      </div>
                     </div>
 
                     <div className="p-6 bg-brand-cream dark:bg-neutral-900 rounded-[2rem] border border-gray-100 dark:border-neutral-800 flex gap-4">
@@ -376,10 +379,11 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                             <button
                               key={slot}
                               onClick={() => setTimeSlot(slot)}
-                              className={`p-3 rounded-2xl font-bold text-sm transition-all border-2 ${timeSlot === slot
-                                ? 'bg-brand-orange border-brand-orange text-white shadow-lg shadow-orange-500/20'
-                                : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-brand-orange/30'
-                                }`}
+                              className={`p-3 rounded-2xl font-bold text-sm transition-all border-2 ${
+                                timeSlot === slot
+                                  ? 'bg-brand-orange border-brand-orange text-white shadow-lg shadow-orange-500/20'
+                                  : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-brand-orange/30'
+                              }`}
                             >
                               {slot}
                             </button>
@@ -395,10 +399,11 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                             <button
                               key={slot}
                               onClick={() => setTimeSlot(slot)}
-                              className={`p-3 rounded-2xl font-bold text-sm transition-all border-2 ${timeSlot === slot
-                                ? 'bg-brand-orange border-brand-orange text-white shadow-lg shadow-orange-500/20'
-                                : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-brand-orange/30'
-                                }`}
+                              className={`p-3 rounded-2xl font-bold text-sm transition-all border-2 ${
+                                timeSlot === slot
+                                  ? 'bg-brand-orange border-brand-orange text-white shadow-lg shadow-orange-500/20'
+                                  : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-brand-orange/30'
+                              }`}
                             >
                               {slot}
                             </button>
@@ -411,52 +416,53 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
 
                 {step === 4 && (
                   <div className="space-y-8 flex flex-col h-full pb-12">
-                    <div className="text-center md:text-left">
-                      <div className="inline-flex items-center gap-2 text-brand-orange mb-2">
-                        <SlidersHorizontal className="w-5 h-5" />
-                        <span className="text-xs font-black uppercase tracking-widest">Step 04</span>
-                      </div>
-                      <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream mb-4">Rotation Preferences</h3>
-                      <p className="text-gray-500 dark:text-gray-400">Items are allotted randomly. Tap any item to <strong>exclude</strong> it from your rotation.</p>
-                    </div>
-
-                    <div className="space-y-10 pb-4">
-                      {currentCategories.map(catName => {
-                        const items = SUB_MENU_ITEMS[catName] || [];
-                        const catExclusions = exclusions[catName] || [];
-
-                        return (
-                          <div key={catName}>
-                            <div className="flex items-center gap-3 mb-4">
-                              <h4 className="text-[10px] font-black uppercase text-brand-orange tracking-[0.25em]">{catName}</h4>
-                              <div className="h-[1px] flex-grow bg-gray-100 dark:border-neutral-800" />
-                            </div>
-
-                            <div className="flex flex-wrap gap-2.5">
-                              {items.map(item => {
-                                const isExcluded = catExclusions.includes(item.name);
-                                return (
-                                  <motion.button
-                                    key={item.name}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() => toggleExclusion(catName, item.name)}
-                                    className={`flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-xs font-bold border-2 transition-all duration-300 ${isExcluded
-                                      ? 'bg-gray-50 dark:bg-neutral-900 text-gray-400 border-dashed border-gray-200 dark:border-neutral-800'
-                                      : 'bg-white dark:bg-neutral-900 text-gray-700 dark:text-gray-200 border-gray-100 dark:border-neutral-800 hover:border-brand-orange shadow-sm'
-                                      }`}
-                                  >
-                                    <span className={`text-lg ${isExcluded ? 'grayscale opacity-30' : ''}`}>{item.emoji}</span>
-                                    <span className={isExcluded ? 'line-through opacity-50' : ''}>{item.name}</span>
-                                    {isExcluded && <EyeOff size={12} className="text-red-400 ml-1" />}
-                                  </motion.button>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                     <div className="text-center md:text-left">
+                        <div className="inline-flex items-center gap-2 text-brand-orange mb-2">
+                          <SlidersHorizontal className="w-5 h-5" />
+                          <span className="text-xs font-black uppercase tracking-widest">Step 04</span>
+                        </div>
+                        <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream mb-4">Rotation Preferences</h3>
+                        <p className="text-gray-500 dark:text-gray-400">Items are allotted randomly. Tap any item to <strong>exclude</strong> it from your rotation.</p>
+                     </div>
+                     
+                     <div className="space-y-10 pb-4">
+                        {currentCategories.map(catName => {
+                            const items = SUB_MENU_ITEMS[catName] || [];
+                            const catExclusions = exclusions[catName] || [];
+                            
+                            return (
+                                <div key={catName}>
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <h4 className="text-[10px] font-black uppercase text-brand-orange tracking-[0.25em]">{catName}</h4>
+                                        <div className="h-[1px] flex-grow bg-gray-100 dark:border-neutral-800" />
+                                    </div>
+                                    
+                                    <div className="flex flex-wrap gap-2.5">
+                                        {items.map(item => {
+                                            const isExcluded = catExclusions.includes(item.name);
+                                            return (
+                                                <motion.button
+                                                  key={item.name}
+                                                  whileHover={{ scale: 1.05 }}
+                                                  whileTap={{ scale: 0.95 }}
+                                                  onClick={() => toggleExclusion(catName, item.name)}
+                                                  className={`flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-xs font-bold border-2 transition-all duration-300 ${
+                                                      isExcluded 
+                                                      ? 'bg-gray-50 dark:bg-neutral-900 text-gray-400 border-dashed border-gray-200 dark:border-neutral-800' 
+                                                      : 'bg-white dark:bg-neutral-900 text-gray-700 dark:text-gray-200 border-gray-100 dark:border-neutral-800 hover:border-brand-orange shadow-sm'
+                                                  }`}
+                                                >
+                                                    <span className={`text-lg ${isExcluded ? 'grayscale opacity-30' : ''}`}>{item.emoji}</span>
+                                                    <span className={isExcluded ? 'line-through opacity-50' : ''}>{item.name}</span>
+                                                    {isExcluded && <EyeOff size={12} className="text-red-400 ml-1" />}
+                                                </motion.button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                     </div>
                   </div>
                 )}
               </motion.div>
@@ -467,61 +473,45 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
           <div className="p-6 md:p-8 border-t border-gray-100 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-[0_-20px_50px_rgba(0,0,0,0.05)] shrink-0">
             <div className="max-w-2xl mx-auto">
               <div className="flex justify-between items-end mb-8">
-                <div>
-                  {step !== 1 && (
-                    <div>
-                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
-                        Total Investment
-                      </p>
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream">
-                          ₹{currentPrice}
-                        </span>
-                        <span className="text-sm text-gray-500">/{duration}</span>
-                      </div>
-                    </div>
-                  )}
-
-                </div>
-
-                {step !== 1 && (
-                  <div className="text-right hidden sm:block">
+                 <div>
+                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Investment</p>
+                   <div className="flex items-baseline gap-2">
+                     <span className="text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream">₹{currentPrice}</span>
+                     <span className="text-sm text-gray-500">/{duration}</span>
+                   </div>
+                 </div>
+                 
+                 <div className="text-right hidden sm:block">
                     <div className="flex items-center gap-2 bg-brand-orange/10 px-4 py-1.5 rounded-full border border-brand-orange/20 mb-1">
                       <Star size={14} className="text-brand-orange fill-current" />
-                      <span className="font-black text-brand-orange uppercase text-[10px]">
-                        {planType} - {size}
-                      </span>
+                      <span className="font-black text-brand-orange uppercase text-[10px]">{planType} - {size}</span>
                     </div>
-                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                      {currentWeight}
-                    </span>
-                  </div>
-                )}
-                </div>
-
-
-                <div className="flex gap-3">
-                  {step > 1 && (
-                    <button
-                      onClick={handleBack}
+                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{currentWeight}</span>
+                 </div>
+              </div>
+              
+              <div className="flex gap-3">
+                 {step > 1 && (
+                    <button 
+                      onClick={handleBack} 
                       className="flex-1 flex items-center justify-center gap-2 py-4 rounded-full border-2 border-gray-100 dark:border-neutral-800 font-bold text-gray-500 hover:bg-gray-50 dark:hover:bg-neutral-900 transition-all"
                     >
                       <ChevronLeft size={18} /> Back
                     </button>
-                  )}
-
-                  {step < 4 ? (
-                    <Button onClick={handleNext} className="flex-[2] gap-2 py-4 shadow-xl">
-                      Continue <ChevronRight size={18} />
-                    </Button>
-                  ) : (
-                    <Button onClick={handleSubscribe} className="flex-[2] gap-3 py-4 text-lg shadow-2xl">
-                      <Send className="w-5 h-5" /> Confirm Membership
-                    </Button>
-                  )}
-                </div>
+                 )}
+                 
+                 {step < 4 ? (
+                   <Button onClick={handleNext} className="flex-[2] gap-2 py-4 shadow-xl">
+                     Continue <ChevronRight size={18} />
+                   </Button>
+                 ) : (
+                   <Button onClick={handleSubscribe} className="flex-[2] gap-3 py-4 text-lg shadow-2xl">
+                     <Send className="w-5 h-5" /> Confirm Membership
+                   </Button>
+                 )}
               </div>
             </div>
+          </div>
         </motion.div>
       </div>
     </AnimatePresence>
