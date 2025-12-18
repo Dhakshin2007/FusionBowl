@@ -231,7 +231,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                             <div className="flex justify-between items-start mb-4">
                               <div>
                                 <h4 className={`text-xl font-bold ${isActive ? 'text-brand-orange' : 'text-gray-800 dark:text-gray-200'}`}>
-                                  {type} Plan
+                                  {type} Membership
                                 </h4>
                                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Weekly Rotation</p>
                               </div>
