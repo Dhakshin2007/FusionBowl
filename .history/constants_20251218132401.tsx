@@ -53,7 +53,7 @@ export const SUB_MENU_ITEMS: Record<string, { name: string; emoji: string }[]> =
   ],
   'Premium Fruits': [
 { name: 'Jamun (నేరేడు పండు)', emoji: '🫐' },
-{ name: 'Pomegranate (దానిమ్మ)', emoji: '🔴' },
+{ name: 'Pomegranate (దానిమ్మ)', emoji: '' },
 { name: 'Apple (ఆపిల్)', emoji: '🍎' },
 { name: 'Pears (పియర్)', emoji: '🍐' },
 { name: 'StarFruit (కమరకాయ)', emoji: '⭐' },
@@ -87,11 +87,11 @@ export const SUB_MENU_ITEMS: Record<string, { name: string; emoji: string }[]> =
 { name: 'SweetPotato (చిలగడదుంప)', emoji: '🍠' },
   ],
   'Mixed Sprouts': [
-{ name: 'Green Moong (పచ్చ పెసలు)', emoji: '🌱' },
-{ name: 'Red Chowli (ఎర్ర అలసందలు)', emoji: '🫘' },
-{ name: 'Channa (సెనగలు)', emoji: '🟤' },
+{ name: 'Green Moong (పచ్చ పెసలు)', emoji: '' },
+{ name: 'Red Chowli (ఎర్ర అలసందలు)', emoji: '' },
+{ name: 'Channa (సెనగలు)', emoji: '' },
 { name: 'Peanuts (వేరుశెనగలు)', emoji: '🥜' },
-{ name: 'Chopped Carrot (తరిగిన క్యారెట్)', emoji: '🥕' },
+{ name: 'Chopped Carrot (తరిగిన క్యారెట్)', emoji: '' },
 
   ],
   'Boiled Egg': [
@@ -110,14 +110,14 @@ export const SUB_MENU_ITEMS: Record<string, { name: string; emoji: string }[]> =
 { name: 'Anjeer (అంజీర్)', emoji: '' },
 { name: 'Pista (పిస్తా)', emoji: '' },
 { name: 'Walnut (వాల్నట్)', emoji: '' },
-{ name: 'Kimia Dates (ఖర్జూరం)', emoji: '' },
+{ name: 'Dates (ఖర్జూరం)', emoji: '' },
 { name: 'Kismiss (ఎండు ద్రాక్ష)', emoji: '' },
   ],
   'Mixed Seeds': [
-{ name: 'Pumpkin Seeds (గుమ్మడికాయ గింజలు)', emoji: '🥧' },
+{ name: 'Pumpkin Seeds (గుమ్మడికాయ గింజలు)', emoji: '' },
 { name: 'Sunflower Seeds (సూర్యకాంతి గింజలు)', emoji: '🌻' },
-{ name: 'Watermelon Seeds (పుచ్చకాయ గింజలు)', emoji: '🍉' },
-{ name: 'Till / Sesame (నువ్వులు)', emoji: '⚪' }
+{ name: 'Watermelon Seeds (పుచ్చకాయ గింజలు)', emoji: '' },
+{ name: 'Till / Sesame (నువ్వులు)', emoji: '' }
   ]
 };
 
@@ -144,6 +144,7 @@ export const PLAN_CATEGORIES_MAP: Record<string, string[]> = {
     'Premium Fruits',
     'Exotic Fruits',
     'Mixed Sprouts',
+    'Boiled Egg',
     'Mixed Dry Fruit Set',
     'Mixed Seeds'
   ]
@@ -168,9 +169,11 @@ export const PLAN_FEATURES: Record<string, string[]> = {
   Signature: [
     '2 Basic Fruits',
     '2 Premium Fruits',
-    '1 Exotic Fruit',
+    'Exotic Fruits',
     'Mixed Sprouts',
-    'Mixed Dry Fruits/Mixed Seeds'
+    'Mixed Dry Fruit Set',
+    'Mixed Seeds',
+    'Boiled Egg'
   ]
 };
 

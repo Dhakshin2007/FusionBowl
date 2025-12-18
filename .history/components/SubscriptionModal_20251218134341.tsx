@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, Info, Send, EyeOff, SlidersHorizontal, ListChecks, Star, ChevronRight, ChevronLeft, LayoutGrid, Sparkles, ArrowDown, Clock } from 'lucide-react';
+import { X, Check, Info, Send, EyeOff, SlidersHorizontal, ListChecks, Star, ChevronRight, ChevronLeft, LayoutGrid, Sparkles, ArrowDown } from 'lucide-react';
 import { PLAN_FEATURES, PLAN_CATEGORIES_MAP, SIZE_DETAILS, PRICING_MATRIX, SUB_MENU_ITEMS, PlanType, PlanDuration, PlanSize } from '../constants';
 import Button from './Button';
 
@@ -9,43 +9,27 @@ interface SubscriptionModalProps {
   onClose: () => void;
 }
 
-type TimeSlot = string;
-
 const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
   const [duration, setDuration] = useState<PlanDuration>('15 Days');
   const [planType, setPlanType] = useState<PlanType>('Standard');
   const [size, setSize] = useState<PlanSize>('Compact');
-  const [timeSlot, setTimeSlot] = useState<TimeSlot>('7:00 AM');
   const [showScrollHint, setShowScrollHint] = useState(true);
   
+  // Ref for the scrollable container to reset scroll on step change
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // State for excluded items: Record<CategoryName, ItemName[]>
   const [exclusions, setExclusions] = useState<Record<string, string[]>>({});
 
-  // Generate time slots (every 30 minutes)
-  const generateTimeSlots = (startHour: number, endHour: number): TimeSlot[] => {
-    const slots: TimeSlot[] = [];
-    for (let hour = startHour; hour < endHour; hour++) {
-      slots.push(`${hour}:00 ${hour >= 12 ? 'PM' : 'AM'}`);
-      slots.push(`${hour}:30 ${hour >= 12 ? 'PM' : 'AM'}`);
-    }
-    return slots;
-  };
-
-  const morningSlots = generateTimeSlots(7, 11);
-  const eveningSlots = generateTimeSlots(16, 19);
-
-  const getServingDays = (): number => {
-    if (duration === '15 Days') return 13;
-    return 26;
-  };
-
+  // Reset scroll to top whenever the step changes
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({ top: 0, behavior: 'instant' });
     }
   }, [step]);
 
+  // Handle scroll hint visibility
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const target = e.currentTarget;
     if (target.scrollTop > 50) {
@@ -55,6 +39,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
     }
   };
 
+  // Prevent background scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -62,7 +47,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
     } else {
       document.body.style.overflow = 'unset';
       document.documentElement.style.overflow = 'unset';
-      setStep(1);
+      setStep(1); // Reset step when closed
     }
     return () => {
       document.body.style.overflow = 'unset';
@@ -84,7 +69,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
     });
   };
 
-  const handleNext = () => setStep(s => Math.min(s + 1, 4));
+  const handleNext = () => setStep(s => Math.min(s + 1, 3));
   const handleBack = () => setStep(s => Math.max(s - 1, 1));
 
   if (!isOpen) return null;
@@ -92,14 +77,12 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
   const currentPrice = PRICING_MATRIX[duration][planType][size];
   const currentCategories = PLAN_CATEGORIES_MAP[planType];
   const currentWeight = SIZE_DETAILS[size];
-  const servingDays = getServingDays();
 
   const handleSubscribe = () => {
     let message = `Hi Fusion Bowl! I would like to subscribe to the following plan:%0A%0A`;
     message += `*Plan Type:* ${planType}%0A`;
     message += `*Duration:* ${duration}%0A`;
     message += `*Size:* ${size} (${currentWeight})%0A`;
-    message += `*Delivery Time Slot:* ${timeSlot}%0A`;
     message += `*Price:* ₹${currentPrice}%0A%0A`;
     message += `Please confirm my subscription.%0A%0A`;
 
@@ -115,7 +98,6 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
 
     window.open(`https://wa.me/917207003062?text=${message}`, '_blank');
   };
-
   const stepVariants = {
     enter: (direction: number) => ({
       x: direction > 0 ? 30 : -30,
@@ -174,10 +156,10 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
             
             {/* Step Indicators */}
             <div className="px-6 pb-4 flex items-center justify-center gap-2">
-                {[1, 2, 3, 4].map(i => (
+                {[1, 2, 3].map(i => (
                   <div key={i} className="flex items-center gap-2">
                     <div className={`h-2 rounded-full transition-all duration-500 ${step >= i ? 'w-12 bg-brand-orange' : 'w-4 bg-gray-100 dark:bg-neutral-800'}`} />
-                    {i < 4 && <div className="w-2 h-0.5 bg-gray-200 dark:bg-neutral-800" />}
+                    {i < 3 && <div className="w-2 h-0.5 bg-gray-200 dark:bg-neutral-800" />}
                   </div>
                 ))}
             </div>
@@ -260,6 +242,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                       })}
                     </div>
 
+                    {/* Scroll Down Hint specifically for Step 1 */}
                     <AnimatePresence>
                       {showScrollHint && (
                         <motion.div 
@@ -296,26 +279,20 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                         <div>
                           <label className="block text-[10px] font-black uppercase text-brand-orange mb-4 tracking-[0.2em] px-1">Subscription Period</label>
                           <div className="grid grid-cols-2 gap-4">
-                            {(['15 Days', '1 Month'] as PlanDuration[]).map((d) => {
-                              const days = d === '15 Days' ? 13 : 26;
-                              return (
-                                <button
-                                  key={d}
-                                  onClick={() => setDuration(d)}
-                                  className={`group p-6 rounded-3xl font-bold transition-all border-2 text-center relative overflow-hidden ${
-                                    duration === d
-                                      ? 'bg-brand-orange border-brand-orange text-white shadow-xl shadow-orange-500/20 scale-[1.02]'
-                                      : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-orange/30'
-                                  }`}
-                                >
-                                  <span className="relative z-10 block text-lg">{d}</span>
-                                  <span className={`text-[10px] font-medium mt-1 ${duration === d ? 'text-white/80' : 'text-gray-400'}`}>
-                                    {days} serving days
-                                  </span>
-                                  {duration === d && <Sparkles size={16} className="absolute top-2 right-2 opacity-50" />}
-                                </button>
-                              );
-                            })}
+                            {(['15 Days', '1 Month'] as PlanDuration[]).map((d) => (
+                              <button
+                                key={d}
+                                onClick={() => setDuration(d)}
+                                className={`group p-6 rounded-3xl font-bold transition-all border-2 text-center relative overflow-hidden ${
+                                  duration === d
+                                    ? 'bg-brand-orange border-brand-orange text-white shadow-xl shadow-orange-500/20 scale-[1.02]'
+                                    : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-500 hover:border-brand-orange/30'
+                                }`}
+                              >
+                                <span className="relative z-10 text-lg">{d}</span>
+                                {duration === d && <Sparkles size={16} className="absolute top-2 right-2 opacity-50" />}
+                              </button>
+                            ))}
                           </div>
                         </div>
 
@@ -352,74 +329,19 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                         <Info className="w-5 h-5 text-brand-orange" />
                       </div>
                       <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-                        <span className="font-bold text-brand-dark dark:text-brand-cream block mb-1">About Your Plan</span>
-                        Sundays are non-delivery days. Your {duration === '15 Days' ? '15-day' : '30-day'} plan includes <strong>{servingDays} serving days</strong>, ensuring you receive every meal you pay for.
+                        <span className="font-bold text-brand-dark dark:text-brand-cream block mb-1">Freshness Policy</span>
+                        Sundays are non-working days. Subscription validity is based on serving days, ensuring you get every meal you pay for.
                       </p>
                     </div>
                   </div>
                 )}
 
                 {step === 3 && (
-                  <div className="space-y-10 pb-12">
-                    <div className="text-center md:text-left">
-                      <div className="inline-flex items-center gap-2 text-brand-orange mb-2">
-                        <Clock className="w-5 h-5" />
-                        <span className="text-xs font-black uppercase tracking-widest">Step 03</span>
-                      </div>
-                      <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream mb-4">Choose Delivery Time</h3>
-                      <p className="text-gray-500 dark:text-gray-400">Select your preferred delivery time slot.</p>
-                    </div>
-
-                    <div className="space-y-8">
-                      {/* Morning Slots */}
-                      <div>
-                        <label className="block text-[10px] font-black uppercase text-brand-orange mb-4 tracking-[0.2em] px-1">Morning Delivery</label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                          {morningSlots.map((slot) => (
-                            <button
-                              key={slot}
-                              onClick={() => setTimeSlot(slot)}
-                              className={`p-3 rounded-2xl font-bold text-sm transition-all border-2 ${
-                                timeSlot === slot
-                                  ? 'bg-brand-orange border-brand-orange text-white shadow-lg shadow-orange-500/20'
-                                  : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-brand-orange/30'
-                              }`}
-                            >
-                              {slot}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Evening Slots */}
-                      <div>
-                        <label className="block text-[10px] font-black uppercase text-brand-orange mb-4 tracking-[0.2em] px-1">Evening Delivery</label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                          {eveningSlots.map((slot) => (
-                            <button
-                              key={slot}
-                              onClick={() => setTimeSlot(slot)}
-                              className={`p-3 rounded-2xl font-bold text-sm transition-all border-2 ${
-                                timeSlot === slot
-                                  ? 'bg-brand-orange border-brand-orange text-white shadow-lg shadow-orange-500/20'
-                                  : 'bg-white dark:bg-neutral-900 border-gray-100 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-brand-orange/30'
-                              }`}
-                            >
-                              {slot}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {step === 4 && (
                   <div className="space-y-8 flex flex-col h-full pb-12">
                      <div className="text-center md:text-left">
                         <div className="inline-flex items-center gap-2 text-brand-orange mb-2">
                           <SlidersHorizontal className="w-5 h-5" />
-                          <span className="text-xs font-black uppercase tracking-widest">Step 04</span>
+                          <span className="text-xs font-black uppercase tracking-widest">Step 03</span>
                         </div>
                         <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream mb-4">Rotation Preferences</h3>
                         <p className="text-gray-500 dark:text-gray-400">Items are allotted randomly. Tap any item to <strong>exclude</strong> it from your rotation.</p>
@@ -500,7 +422,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                     </button>
                  )}
                  
-                 {step < 4 ? (
+                 {step < 3 ? (
                    <Button onClick={handleNext} className="flex-[2] gap-2 py-4 shadow-xl">
                      Continue <ChevronRight size={18} />
                    </Button>

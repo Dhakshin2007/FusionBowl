@@ -144,6 +144,7 @@ export const PLAN_CATEGORIES_MAP: Record<string, string[]> = {
     'Premium Fruits',
     'Exotic Fruits',
     'Mixed Sprouts',
+    'Boiled Egg',
     'Mixed Dry Fruit Set',
     'Mixed Seeds'
   ]
@@ -170,7 +171,8 @@ export const PLAN_FEATURES: Record<string, string[]> = {
     '2 Premium Fruits',
     '1 Exotic Fruit',
     'Mixed Sprouts',
-    'Mixed Dry Fruits/Mixed Seeds'
+    'Mixed Dry Fruits/Mixed Seeds',
+    'Boiled Egg',
   ]
 };
 

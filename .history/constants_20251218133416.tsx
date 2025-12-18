@@ -140,12 +140,11 @@ export const PLAN_CATEGORIES_MAP: Record<string, string[]> = {
     'Soaked Seeds'
   ],
   Signature: [
-    'Basic Fruits',
-    'Premium Fruits',
-    'Exotic Fruits',
+    '2 Basic Fruits',
+    '2 Premium Fruits',
+    '1 Exotic Fruit',
     'Mixed Sprouts',
-    'Mixed Dry Fruit Set',
-    'Mixed Seeds'
+    'Mixed Dry Fruits/Mixed Seeds'
   ]
 };
 

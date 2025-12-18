@@ -53,7 +53,7 @@ export const SUB_MENU_ITEMS: Record<string, { name: string; emoji: string }[]> =
   ],
   'Premium Fruits': [
 { name: 'Jamun (నేరేడు పండు)', emoji: '🫐' },
-{ name: 'Pomegranate (దానిమ్మ)', emoji: '🔴' },
+{ name: 'Pomegranate (దానిమ్మ)', emoji: '' },
 { name: 'Apple (ఆపిల్)', emoji: '🍎' },
 { name: 'Pears (పియర్)', emoji: '🍐' },
 { name: 'StarFruit (కమరకాయ)', emoji: '⭐' },
@@ -144,6 +144,7 @@ export const PLAN_CATEGORIES_MAP: Record<string, string[]> = {
     'Premium Fruits',
     'Exotic Fruits',
     'Mixed Sprouts',
+    'Boiled Egg',
     'Mixed Dry Fruit Set',
     'Mixed Seeds'
   ]
@@ -168,9 +169,11 @@ export const PLAN_FEATURES: Record<string, string[]> = {
   Signature: [
     '2 Basic Fruits',
     '2 Premium Fruits',
-    '1 Exotic Fruit',
+    'Exotic Fruits',
     'Mixed Sprouts',
-    'Mixed Dry Fruits/Mixed Seeds'
+    'Mixed Dry Fruit Set',
+    'Mixed Seeds',
+    'Boiled Egg'
   ]
 };
 
