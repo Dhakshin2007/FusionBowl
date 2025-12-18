@@ -395,38 +395,11 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                         <Clock className="w-5 h-5" />
                         <span className="text-xs font-black uppercase tracking-widest">Step 03</span>
                       </div>
-                      <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream mb-4">Choose Delivery Time & Address</h3>
-                      <p className="text-gray-500 dark:text-gray-400">Select your preferred delivery time slot.And enter your delivery address.</p>
+                      <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream mb-4">Choose Delivery Time</h3>
+                      <p className="text-gray-500 dark:text-gray-400">Select your preferred delivery time slot.</p>
                     </div>
 
                     <div className="space-y-8">
-                      {/* Delivery Address */}
-                      <div className="mt-10">
-                        <label className="block text-[10px] font-black uppercase text-brand-orange mb-3 tracking-[0.2em] px-1">
-                          Delivery Address
-                        </label>
-
-                        <textarea
-                          value={address}
-                          onChange={(e) => {
-                            setAddress(e.target.value);
-                            if (e.target.value.trim()) setAddressError(false);
-                          }}
-                          rows={3}
-                          placeholder="House / Flat No, Street, Area, Landmark, Pincode"
-                          className={`w-full p-4 rounded-2xl border-2 text-sm font-medium resize-none transition-all bg-white dark:bg-neutral-900
-      ${addressError
-                              ? 'border-red-400 focus:border-red-500'
-                              : 'border-gray-100 dark:border-neutral-800 focus:border-brand-orange'}
-    `}
-                        />
-
-                        <p className="text-[10px] text-gray-400 mt-2">
-                          Please enter a complete address for smooth delivery
-                        </p>
-                      </div>
-
-
                       {/* Morning Slots */}
                       <div>
                         <label className="block text-[10px] font-black uppercase text-brand-orange mb-4 tracking-[0.2em] px-1">Morning Delivery</label>
@@ -445,7 +418,6 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                           ))}
                         </div>
                       </div>
-
                       {/* Evening Slots */}
                       <div>
                         <label className="block text-[10px] font-black uppercase text-brand-orange mb-4 tracking-[0.2em] px-1">Evening Delivery</label>

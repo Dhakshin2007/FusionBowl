@@ -396,7 +396,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                         <span className="text-xs font-black uppercase tracking-widest">Step 03</span>
                       </div>
                       <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream mb-4">Choose Delivery Time & Address</h3>
-                      <p className="text-gray-500 dark:text-gray-400">Select your preferred delivery time slot.And enter your delivery address.</p>
+                      <p className="text-gray-500 dark:text-gray-400">Select your preferred delivery time slot.</p>
                     </div>
 
                     <div className="space-y-8">

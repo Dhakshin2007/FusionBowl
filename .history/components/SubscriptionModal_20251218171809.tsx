@@ -395,8 +395,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                         <Clock className="w-5 h-5" />
                         <span className="text-xs font-black uppercase tracking-widest">Step 03</span>
                       </div>
-                      <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream mb-4">Choose Delivery Time & Address</h3>
-                      <p className="text-gray-500 dark:text-gray-400">Select your preferred delivery time slot.And enter your delivery address.</p>
+                      <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark dark:text-brand-cream mb-4">Choose Delivery Time</h3>
+                      <p className="text-gray-500 dark:text-gray-400">Select your preferred delivery time slot.</p>
                     </div>
 
                     <div className="space-y-8">
@@ -414,14 +414,15 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                           }}
                           rows={3}
                           placeholder="House / Flat No, Street, Area, Landmark, Pincode"
-                          className={`w-full p-4 rounded-2xl border-2 text-sm font-medium resize-none transition-all bg-white dark:bg-neutral-900
+                          className={`w-full p-4 rounded-2xl border-2 text-sm font-medium resize-none transition-all
+      bg-white dark:bg-neutral-900
       ${addressError
                               ? 'border-red-400 focus:border-red-500'
                               : 'border-gray-100 dark:border-neutral-800 focus:border-brand-orange'}
     `}
                         />
 
-                        <p className="text-[10px] text-gray-400 mt-2">
+                        <p className="text-[11px] text-gray-400 mt-2">
                           Please enter a complete address for smooth delivery
                         </p>
                       </div>
