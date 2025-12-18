@@ -114,10 +114,9 @@ export const SUB_MENU_ITEMS: Record<string, { name: string; emoji: string }[]> =
 { name: 'Kismiss (ఎండు ద్రాక్ష)', emoji: '' },
   ],
   'Mixed Seeds': [
-{ name: 'Pumpkin Seeds (గుమ్మడికాయ గింజలు)', emoji: '' },
-{ name: 'Sunflower Seeds (సూర్యకాంతి గింజలు)', emoji: '🌻' },
-{ name: 'Watermelon Seeds (పుచ్చకాయ గింజలు)', emoji: '' },
-{ name: 'Till / Sesame (నువ్వులు)', emoji: '' }
+    { name: 'Watermelon Seeds', emoji: '🍉' },
+    { name: 'Muskmelon Seeds', emoji: '🍈' },
+    { name: 'Sesame Seeds', emoji: '⚪' }
   ]
 };
 

@@ -38,86 +38,66 @@ export const INGREDIENTS: Ingredient[] = [
 
 export const SUB_MENU_ITEMS: Record<string, { name: string; emoji: string }[]> = {
   'Basic Fruits': [
-{ name: 'Mosambi (బత్తాయి)', emoji: '🍋' },
-{ name: 'Papaya (బొప్పాయి)', emoji: '🧡' },
-{ name: 'Muskmelon (ఖర్బూజ)', emoji: '🍈' },
-{ name: 'Watermelon (పుచ్చకాయ)', emoji: '🍉' },
-{ name: 'Guava (జామకాయ)', emoji: '🍏' },
-{ name: 'Sapota (సపోటా / చీకూ)', emoji: '🍐' },
-{ name: 'Orange (నారింజ)', emoji: '🍊' },
-{ name: 'Pineapple (అనాస)', emoji: '🍍' },
-{ name: 'Grapes (ద్రాక్ష)', emoji: '🍇' },
-{ name: 'Mango (మామిడి)', emoji: '🥭' }
-
+{ name: 'Mosambi', emoji: '🍋' },
+{ name: 'Papaya', emoji: '🧡' },
+{ name: 'Muskmelon', emoji: '🍈' },
+{ name: 'Watermelon', emoji: '🍉' },
+{ name: 'Guava', emoji: '🍏' },
+{ name: 'Sapota', emoji: '🍐' },
+{ name: 'Orange', emoji: '🍊' },
+{ name: 'Pineapple', emoji: '🍍' },
+{ name: 'Grapes (Green/Black)', emoji: '🍇' },
+{ name: 'Mango', emoji: '🥭' }
 
   ],
   'Premium Fruits': [
-{ name: 'Jamun (నేరేడు పండు)', emoji: '🫐' },
-{ name: 'Pomegranate (దానిమ్మ)', emoji: '' },
-{ name: 'Apple (ఆపిల్)', emoji: '🍎' },
-{ name: 'Pears (పియర్)', emoji: '🍐' },
-{ name: 'StarFruit (కమరకాయ)', emoji: '⭐' },
-{ name: 'Red Globe Grapes (ఎర్ర ద్రాక్ష)', emoji: '🍇' },
-{ name: 'Plums (ప్లమ్)', emoji: '🍑' },
-{ name: 'JackFruit (పనసకాయ)', emoji: '' },
-{ name: 'Pink Dragon (పింక్ డ్రాగన్ ఫ్రూట్)', emoji: '' },
-{ name: 'White Dragon (వైట్ డ్రాగన్ ఫ్రూట్)', emoji: '' }
-
+    { name: 'Pomegranate', emoji: '🔴' },
+    { name: 'Dragon Fruit', emoji: '🍥' },
+    { name: 'Kiwi', emoji: '🥝' },
+    { name: 'Grapes', emoji: '🍇' }
   ],
   'Exotic Fruits': [
-{ name: 'Persimmon (పెర్సిమన్)', emoji: '' },
-{ name: 'Kiwi (కివీ)', emoji: '🥝' },
-{ name: 'Avocado (అవకాడో)', emoji: '🥑' },
-{ name: 'Rambutan (రాంబుటాన్)', emoji: '' },
-{ name: 'Strawberry (స్ట్రాబెర్రీ)', emoji: '🍓' },
-{ name: 'Litchi (లిచీ)', emoji: '' },
-{ name: 'Longan (లాంగన్)', emoji: '' },
-{ name: 'Cherries (చెర్రీలు)', emoji: '🍒' },
-{ name: 'Mangosteen (మాంగోస్టీన్)', emoji: '' },
-{ name: 'BlueBerry (బ్లూబెర్రీ)', emoji: '🫐' },
+    { name: 'Strawberry', emoji: '🍓' },
+    { name: 'Mango (Seasonal)', emoji: '🥭' },
+    { name: 'Blueberries', emoji: '🫐' }
   ],
   'Mixed Veggie': [
-{ name: 'Carrot (క్యారెట్)', emoji: '🥕' },
-{ name: 'Beetroot (బీట్‌రూట్)', emoji: '' },
-{ name: 'Cucumber (దోసకాయ)', emoji: '🥒' },
-
+    { name: 'Carrot', emoji: '🥕' },
+    { name: 'Beetroot', emoji: '🟣' },
+    { name: 'Cucumber', emoji: '🥒' },
+    { name: 'Radish', emoji: '🥬' }
   ],
   'Boiled Veggie': [
-{ name: 'SweetCorn (స్వీట్ కార్న్)', emoji: '🌽' },
-{ name: 'SweetPotato (చిలగడదుంప)', emoji: '🍠' },
+    { name: 'Broccoli', emoji: '🥦' },
+    { name: 'Sweet Corn', emoji: '🌽' },
+    { name: 'Green Peas', emoji: '🌿' }
   ],
   'Mixed Sprouts': [
-{ name: 'Green Moong (పచ్చ పెసలు)', emoji: '' },
-{ name: 'Red Chowli (ఎర్ర అలసందలు)', emoji: '' },
-{ name: 'Channa (సెనగలు)', emoji: '' },
-{ name: 'Peanuts (వేరుశెనగలు)', emoji: '🥜' },
-{ name: 'Chopped Carrot (తరిగిన క్యారెట్)', emoji: '' },
-
+    { name: 'Moong Sprouts', emoji: '🌱' },
+    { name: 'Chana Sprouts', emoji: '🟤' },
+    { name: 'Mixed Beans', emoji: '🫘' }
   ],
   'Boiled Egg': [
     { name: 'Full Egg', emoji: '🥚' },
     { name: 'Egg Whites Only', emoji: '⚪' }
   ],
   'Soaked Seeds': [
-    { name: 'Mahabeera (మహావీర గింజలు)', emoji: '' },
+    { name: 'Sunflower Seeds', emoji: '🌻' },
     { name: 'Pumpkin Seeds', emoji: '🎃' },
     { name: 'Flax Seeds', emoji: '🟤' },
     { name: 'Chia Seeds', emoji: '⚫' }
   ],
   'Mixed Dry Fruit Set': [
-{ name: 'Badam (బాదం)', emoji: '' },
-{ name: 'Cashew (జీడిపప్పు)', emoji: '' },
-{ name: 'Anjeer (అంజీర్)', emoji: '' },
-{ name: 'Pista (పిస్తా)', emoji: '' },
-{ name: 'Walnut (వాల్నట్)', emoji: '' },
-{ name: 'Dates (ఖర్జూరం)', emoji: '' },
-{ name: 'Kismiss (ఎండు ద్రాక్ష)', emoji: '' },
+    { name: 'Almonds', emoji: '🥜' },
+    { name: 'Cashews', emoji: '🥛' },
+    { name: 'Walnuts', emoji: '🧠' },
+    { name: 'Dates', emoji: '🌴' },
+    { name: 'Raisins', emoji: '🍇' }
   ],
   'Mixed Seeds': [
-{ name: 'Pumpkin Seeds (గుమ్మడికాయ గింజలు)', emoji: '' },
-{ name: 'Sunflower Seeds (సూర్యకాంతి గింజలు)', emoji: '🌻' },
-{ name: 'Watermelon Seeds (పుచ్చకాయ గింజలు)', emoji: '' },
-{ name: 'Till / Sesame (నువ్వులు)', emoji: '' }
+    { name: 'Watermelon Seeds', emoji: '🍉' },
+    { name: 'Muskmelon Seeds', emoji: '🍈' },
+    { name: 'Sesame Seeds', emoji: '⚪' }
   ]
 };
 
