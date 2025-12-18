@@ -231,7 +231,7 @@ export const SIGNATURE_BOWLS = [
   {
     id: 'sprout-salad',
     name: 'Green Sprout Salad',
-    ingredients: 'Mixed Sprouted legumes, herbs, lemon & olive oil, Mild spices',
+    ingredients: 'Sprouted legumes, herbs, lemon & olive oil, mild spices',
     price: 99,
     calories: 250,
     tag: 'Best Seller'

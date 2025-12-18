@@ -230,27 +230,27 @@ export const NAV_LINKS = [
 export const SIGNATURE_BOWLS = [
   {
     id: 'sprout-salad',
-    name: 'Green Sprout Salad',
-    ingredients: 'Mixed Sprouted legumes, herbs, lemon & olive oil, Mild spices',
-    price: 99,
+    name: 'Sprout Salad',
+    ingredients: 'Sprouts, vegetables, herbs, spices, lemon & olive oil',
+    price: ,
     calories: 250,
     tag: 'Best Seller'
   },
   {
-    id: 'veggie-salad',
-    name: 'Steamed Vegetable Salad',
-    ingredients: 'Steamed vegetables, aromatic herbs, simple seasoning , mild spices & olive oil dressing',
-    price: 129,
+    id: 'fiber-boost',
+    name: 'Fiber Boost',
+    ingredients: 'Banana, Guava, Kiwi',
+    price: 220,
     calories: 320,
-    tag: 'Vegetarian Fav'
+    tag: 'Gym Favorite'
   },
   {
-    id: 'chick-kick',
-    name: 'Protien Rich Chicken Salad',
-    ingredients: 'Tender chicken, mixed greens, spices, olive oil , signature dressing',
-    price: 149,
+    id: 'citrus-kick',
+    name: 'Citrus Kick',
+    ingredients: 'Orange, Pineapple, Kiwi',
+    price: 190,
     calories: 180,
-    tag: 'Gym Favorite'
+    tag: 'Vitamin C'
   }
 ];
 

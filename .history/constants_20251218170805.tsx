@@ -231,7 +231,7 @@ export const SIGNATURE_BOWLS = [
   {
     id: 'sprout-salad',
     name: 'Green Sprout Salad',
-    ingredients: 'Mixed Sprouted legumes, herbs, lemon & olive oil, Mild spices',
+    ingredients: 'Sprouts, herbs, spices, lemon & olive oil',
     price: 99,
     calories: 250,
     tag: 'Best Seller'
@@ -247,7 +247,7 @@ export const SIGNATURE_BOWLS = [
   {
     id: 'chick-kick',
     name: 'Protien Rich Chicken Salad',
-    ingredients: 'Tender chicken, mixed greens, spices, olive oil , signature dressing',
+    ingredients: 'Tender chicken, mixed greens, spices, olive oil , ',
     price: 149,
     calories: 180,
     tag: 'Gym Favorite'
