@@ -422,7 +422,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                         />
 
                         <p className="text-[10px] text-gray-400 mt-2">
-                          Please enter a complete address for smooth delivery. House / Flat No, Street, Area, Landmark, Pincode
+                          Please enter a complete address for smooth delivery
                         </p>
                       </div>
 
