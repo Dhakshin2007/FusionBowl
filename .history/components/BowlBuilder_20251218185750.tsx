@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, Send, ShoppingBag, GlassWater, Trash2, X, ChevronRight, ChevronLeft, Sparkles, Wand2, RefreshCw, Check, Utensils, Info, AlertCircle } from 'lucide-react';
-import { INGREDIENTS, PACKS, PLATTER_CATEGORIES, JuiceIngredient } from '../constants';
+import { INGREDIENTS, PACKS, PLATTER_CATEGORIES } from '../constants';
 import { Ingredient, SectionId } from '../types';
 import Button from './Button';
 import { analyzeBowlNutrition } from '../services/geminiService';
@@ -10,7 +10,6 @@ const BowlBuilder: React.FC = () => {
   const [selectedPack, setSelectedPack] = useState<'classic' | 'prime' | null>(null);
   const [selections, setSelections] = useState<Record<string, string>>({});
   const [selectedJuices, setSelectedJuices] = useState<Record<string, number>>({});
-  const [activeJuiceSize, setActiveJuiceSize] = useState<'Shot' | 'Standard'>('Standard');
   const [isJuiceModalOpen, setIsJuiceModalOpen] = useState(false);
   const [showJuiceUpsell, setShowJuiceUpsell] = useState(false);
   const [address, setAddress] = useState('');
@@ -21,7 +20,6 @@ const BowlBuilder: React.FC = () => {
 
   const activePackData = selectedPack ? PACKS[selectedPack] : null;
   const currentCategory = activePackData ? PLATTER_CATEGORIES[activePackData.categories[currentCategoryIndex]] : null;
-  const currentCategoryWeight = activePackData && currentCategory ? (activePackData.weights as any)[currentCategory.id] : '';
 
   const handleSelectPack = (packId: 'classic' | 'prime') => {
     setSelectedPack(packId);
@@ -35,9 +33,11 @@ const BowlBuilder: React.FC = () => {
   const handleSelectItem = (category: string, item: string) => {
     setSelections(prev => ({ ...prev, [category]: item }));
     setErrorMsg(null);
+    // Move to next category if not at the end
     if (activePackData && currentCategoryIndex < activePackData.categories.length - 1) {
       setTimeout(() => setCurrentCategoryIndex(prev => prev + 1), 350);
     } else if (activePackData && currentCategoryIndex === activePackData.categories.length - 1) {
+      // Show upsell if they just finished the platter and haven't selected juices yet
       setTimeout(() => {
         if (Object.keys(selectedJuices).length === 0) {
           setShowJuiceUpsell(true);
@@ -47,46 +47,41 @@ const BowlBuilder: React.FC = () => {
     setAiAnalysis('');
   };
 
-  const handleToggleJuice = (juiceId: string, size: 'Shot' | 'Standard', delta: number) => {
-    const key = `${juiceId}:${size}`;
+  const handleToggleJuice = (juiceId: string, delta: number) => {
     setSelectedJuices(prev => {
-      const current = prev[key] || 0;
+      const current = prev[juiceId] || 0;
       const next = Math.max(0, current + delta);
       const newState = { ...prev };
-      if (next === 0) delete newState[key];
-      else newState[key] = next;
+      if (next === 0) delete newState[juiceId];
+      else newState[juiceId] = next;
       return newState;
     });
   };
 
-  const juicePriceMap = (juice: JuiceIngredient | undefined, size: string) => {
-    if (!juice) return 0;
-    return size === 'Shot' ? juice.shotPrice : juice.regularPrice;
-  };
-
   const totalPrice = useMemo(() => {
     let bowlPrice = activePackData ? activePackData.price : 0;
-    let juicePriceTotal = Object.entries(selectedJuices).reduce((acc, [key, qty]) => {
-      const [id, size] = key.split(':');
-      const juice = INGREDIENTS.find(i => i.id === id) as JuiceIngredient;
-      const price = juicePriceMap(juice, size);
-      return acc + (price * (qty as number));
+    let juicePrice = Object.entries(selectedJuices).reduce((acc, [id, qty]) => {
+      const juice = INGREDIENTS.find(i => i.id === id);
+      return acc + (juice ? juice.price * (qty as number) : 0);
     }, 0);
-    return bowlPrice + juicePriceTotal;
+    return bowlPrice + juicePrice;
   }, [activePackData, selectedJuices]);
 
   const handleWhatsAppOrder = () => {
+    // Validation: If platter is selected, all compartments must be filled
     if (selectedPack) {
       const missingCategoryIndex = activePackData?.categories.findIndex(catId => !selections[catId]);
       if (missingCategoryIndex !== undefined && missingCategoryIndex !== -1) {
         setErrorMsg(`Please complete your platter by selecting items for all sections.`);
         setCurrentCategoryIndex(missingCategoryIndex);
+        // Scroll to the selector on mobile
         const el = document.getElementById('category-selector');
         el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
     }
 
+    // Must have at least something in the order
     if (!selectedPack && Object.keys(selectedJuices).length === 0) {
       setErrorMsg("Please select a platter or some fresh juices to proceed.");
       return;
@@ -98,18 +93,15 @@ const BowlBuilder: React.FC = () => {
       message += `\n*A) Fruit Platter (${activePackData?.name})* (₹${activePackData?.price}):\n`;
       activePackData?.categories.forEach(catId => {
         const cat = PLATTER_CATEGORIES[catId];
-        const weight = (activePackData.weights as any)[catId];
-        message += `- ${cat.name} (${weight}): ${selections[catId]}\n`;
+        message += `- ${cat.name}: ${selections[catId]}\n`;
       });
     }
 
     if (Object.keys(selectedJuices).length > 0) {
       message += `\n*B) Cold Pressed Juices*:\n`;
-      Object.entries(selectedJuices).forEach(([key, qty]) => {
-        const [id, size] = key.split(':');
-        const juice = INGREDIENTS.find(i => i.id === id) as JuiceIngredient;
-        const price = juicePriceMap(juice, size);
-        message += `- ${juice?.name} (${size}) x${qty} (₹${price * (qty as number)})\n`;
+      Object.entries(selectedJuices).forEach(([id, qty]) => {
+        const juice = INGREDIENTS.find(i => i.id === id);
+        message += `- ${juice?.name} x${qty}\n`;
       });
     }
 
@@ -122,8 +114,8 @@ const BowlBuilder: React.FC = () => {
   const handleAIAnalysis = async () => {
     if (!selectedPack) return;
     setIsAnalyzing(true);
-    const mockIngredients: Ingredient[] = Object.values(selections).map(name => ({
-      id: name as string, name: name as string, category: 'fruit', price: 0, calories: 50, color: 'bg-white', emoji: ''
+    const mockIngredients: Ingredient[] = Object.values(selections).map((name: string) => ({
+      id: name, name, category: 'fruit', price: 0, calories: 50, color: 'bg-white', emoji: ''
     }));
     const result = await analyzeBowlNutrition(mockIngredients);
     setAiAnalysis(result);
@@ -201,6 +193,7 @@ const BowlBuilder: React.FC = () => {
           <p className="text-gray-500 max-w-lg mx-auto mb-12 text-sm md:text-base">Experience nature's platter. Select your pack and curate each compartment with handpicked fruits.</p>
           
           <div className="flex flex-col md:flex-row justify-center items-stretch gap-6 max-w-5xl mx-auto">
+            {/* Classic Card */}
             <button
               onClick={() => handleSelectPack('classic')}
               className={`flex-1 p-8 md:p-10 rounded-[2.5rem] border-2 transition-all flex flex-col items-center gap-2 group ${
@@ -215,6 +208,7 @@ const BowlBuilder: React.FC = () => {
               <span className="text-2xl md:text-3xl font-serif font-bold mt-2">₹135</span>
             </button>
 
+            {/* Prime Card */}
             <button
               onClick={() => handleSelectPack('prime')}
               className={`flex-1 p-8 md:p-10 rounded-[2.5rem] border-2 transition-all flex flex-col items-center gap-2 group ${
@@ -229,6 +223,7 @@ const BowlBuilder: React.FC = () => {
               <span className="text-2xl md:text-3xl font-serif font-bold mt-2">₹249</span>
             </button>
 
+            {/* Juice Card */}
             <button
               onClick={() => { setSelectedPack(null); setIsJuiceModalOpen(true); }}
               className={`flex-1 p-8 md:p-10 rounded-[2.5rem] border-2 transition-all flex flex-col items-center gap-2 group ${
@@ -248,6 +243,7 @@ const BowlBuilder: React.FC = () => {
         {(selectedPack || Object.keys(selectedJuices).length > 0) && (
           <div className="grid lg:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
             
+            {/* Visuals & Summary */}
             <div className="bg-white dark:bg-neutral-900 rounded-[3.5rem] p-8 md:p-12 shadow-2xl border border-gray-100 dark:border-white/5 relative overflow-hidden">
                <div className="flex justify-between items-center mb-12">
                   <div className="flex items-center gap-3">
@@ -277,14 +273,10 @@ const BowlBuilder: React.FC = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {activePackData?.categories.map(catId => {
                           const sel = selections[catId];
-                          const weight = (activePackData.weights as any)[catId];
                           return (
                             <div key={catId} className={`p-4 rounded-2xl flex justify-between items-center border transition-all ${sel ? 'bg-brand-orange/5 border-brand-orange/20 shadow-sm' : 'bg-gray-50 dark:bg-neutral-800/30 border-transparent'}`}>
                               <div className="flex flex-col">
-                                 <div className="flex items-center gap-2">
-                                    <span className="text-[9px] font-black text-gray-400 uppercase tracking-wider mb-0.5">{PLATTER_CATEGORIES[catId].name}</span>
-                                    <span className="text-[8px] font-black text-brand-orange/60">{weight}</span>
-                                 </div>
+                                 <span className="text-[9px] font-black text-gray-400 uppercase tracking-wider mb-0.5">{PLATTER_CATEGORIES[catId].name}</span>
                                  <span className={`text-xs font-bold truncate max-w-[120px] ${sel ? 'text-brand-orange' : 'text-gray-400 italic'}`}>{sel || 'Pending...'}</span>
                               </div>
                               {sel && (
@@ -309,22 +301,18 @@ const BowlBuilder: React.FC = () => {
                         <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest">B) Cold Pressed Juices</span>
                       </div>
                       <div className="grid grid-cols-1 gap-2">
-                        {Object.entries(selectedJuices).map(([key, qty]) => {
-                          const [id, size] = key.split(':');
-                          const juice = INGREDIENTS.find(j => j.id === id) as JuiceIngredient;
+                        {Object.entries(selectedJuices).map(([id, qty]) => {
+                          const juice = INGREDIENTS.find(j => j.id === id);
                           return (
-                            <div key={key} className="flex justify-between items-center p-3.5 bg-blue-50/50 dark:bg-blue-900/5 rounded-2xl border border-blue-100/50 dark:border-blue-900/20">
+                            <div key={id} className="flex justify-between items-center p-3.5 bg-blue-50/50 dark:bg-blue-900/5 rounded-2xl border border-blue-100/50 dark:border-blue-900/20">
                                <div className="flex items-center gap-3">
                                   <div className={`w-8 h-8 rounded-lg ${juice?.color} flex items-center justify-center text-white text-xs`}>{juice?.emoji}</div>
-                                  <div className="flex flex-col">
-                                     <span className="text-xs font-bold dark:text-gray-300">{juice?.name}</span>
-                                     <span className="text-[9px] text-gray-400 font-black uppercase tracking-widest">{size}</span>
-                                  </div>
+                                  <span className="text-xs font-bold dark:text-gray-300">{juice?.name}</span>
                                </div>
                                <div className="flex items-center gap-2">
-                                  <button onClick={() => handleToggleJuice(id, size as 'Shot' | 'Standard', -1)} className="text-gray-400 hover:text-red-500 transition-colors p-1"><Minus size={14} /></button>
+                                  <button onClick={() => handleToggleJuice(id, -1)} className="text-gray-400 hover:text-red-500 transition-colors p-1"><Minus size={14} /></button>
                                   <span className="text-[10px] font-black text-blue-500 px-3 py-1 bg-white dark:bg-neutral-800 rounded-lg shadow-sm">x {qty}</span>
-                                  <button onClick={() => handleToggleJuice(id, size as 'Shot' | 'Standard', 1)} className="text-gray-400 hover:text-blue-500 transition-colors p-1"><Plus size={14} /></button>
+                                  <button onClick={() => handleToggleJuice(id, 1)} className="text-gray-400 hover:text-blue-500 transition-colors p-1"><Plus size={14} /></button>
                                </div>
                             </div>
                           );
@@ -335,6 +323,7 @@ const BowlBuilder: React.FC = () => {
                </div>
             </div>
 
+            {/* Selection Engine */}
             <div id="category-selector" className="space-y-8 h-full flex flex-col">
                {selectedPack && currentCategory ? (
                  <motion.div 
@@ -344,10 +333,7 @@ const BowlBuilder: React.FC = () => {
                  >
                     <div className="flex justify-between items-end mb-10">
                       <div>
-                        <div className="flex items-center gap-2 mb-3">
-                           <span className="text-[10px] font-black text-brand-orange uppercase tracking-[0.2em] block">Section {currentCategoryIndex + 1}: {currentCategory.name}</span>
-                           <span className="px-2 py-0.5 rounded-full bg-brand-orange/10 text-brand-orange text-[9px] font-black tracking-widest">{currentCategoryWeight}</span>
-                        </div>
+                        <span className="text-[10px] font-black text-brand-orange uppercase tracking-[0.2em] mb-3 block">Section {currentCategoryIndex + 1}: {currentCategory.name}</span>
                         <h3 className="text-3xl font-serif font-bold dark:text-white leading-tight">{currentCategory.teluguName}</h3>
                       </div>
                       <div className="flex gap-2">
@@ -469,47 +455,28 @@ const BowlBuilder: React.FC = () => {
                     </div>
                     <button onClick={() => setIsJuiceModalOpen(false)} className="p-3 bg-white dark:bg-neutral-800 hover:bg-gray-100 dark:hover:bg-neutral-700 rounded-full transition-colors text-gray-400 shadow-sm"><X size={20} /></button>
                   </div>
-
-                  <div className="px-10 py-4 bg-gray-50/50 dark:bg-neutral-800/20 border-b border-gray-100 dark:border-white/5">
-                    <div className="flex bg-white dark:bg-neutral-900 rounded-2xl p-1 shadow-sm border border-gray-100 dark:border-white/5">
-                      {(['Shot', 'Standard'] as const).map(size => (
-                        <button
-                          key={size}
-                          onClick={() => setActiveJuiceSize(size)}
-                          className={`flex-1 py-3 px-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeJuiceSize === size ? 'bg-blue-500 text-white shadow-lg' : 'text-gray-400 hover:text-gray-600'}`}
-                        >
-                          {size} {size === 'Shot' ? '(60ml)' : '(360ml)'}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
                   <div className="flex-grow overflow-y-auto p-8 md:p-10 custom-scrollbar space-y-4">
-                    {INGREDIENTS.filter(i => i.category === 'shake-item').map(juice => {
-                      const qty = selectedJuices[`${juice.id}:${activeJuiceSize}`] || 0;
-                      const currentPrice = juicePriceMap(juice as JuiceIngredient, activeJuiceSize);
-                      return (
-                        <motion.div 
-                          key={juice.id} layout
-                          className="bg-white dark:bg-neutral-800/40 p-5 rounded-[2.5rem] border border-gray-100 dark:border-white/5 flex justify-between items-center group hover:border-blue-500/30 transition-all shadow-sm"
-                        >
-                          <div className="flex items-center gap-5">
-                             <div className={`w-14 h-14 rounded-3xl ${juice.color} flex items-center justify-center text-white text-2xl shadow-xl transition-transform`}>
-                                {juice.emoji}
-                             </div>
-                             <div>
-                               <h4 className="font-bold text-lg dark:text-white leading-tight">{juice.name}</h4>
-                               <p className="text-xs text-brand-orange font-black mt-1">₹{currentPrice} <span className="text-gray-400 text-[9px] uppercase tracking-widest ml-1">({activeJuiceSize})</span></p>
-                             </div>
-                          </div>
-                          <div className="flex items-center gap-5 bg-gray-50 dark:bg-neutral-900 p-2.5 rounded-2xl border border-gray-100 dark:border-white/5">
-                             <button onClick={() => handleToggleJuice(juice.id, activeJuiceSize, -1)} className="p-2 hover:text-red-500 transition-colors"><Minus size={18} /></button>
-                             <span className="font-black text-xl w-6 text-center dark:text-white">{qty}</span>
-                             <button onClick={() => handleToggleJuice(juice.id, activeJuiceSize, 1)} className="p-2 hover:text-blue-500 transition-colors"><Plus size={18} /></button>
-                          </div>
-                        </motion.div>
-                      );
-                    })}
+                    {INGREDIENTS.filter(i => i.category === 'shake-item').map(juice => (
+                      <motion.div 
+                        key={juice.id} layout
+                        className="bg-white dark:bg-neutral-800/40 p-5 rounded-[2.5rem] border border-gray-100 dark:border-white/5 flex justify-between items-center group hover:border-blue-500/30 transition-all shadow-sm"
+                      >
+                        <div className="flex items-center gap-5">
+                           <div className={`w-14 h-14 rounded-3xl ${juice.color} flex items-center justify-center text-white text-2xl shadow-xl transition-transform`}>
+                              {juice.emoji}
+                           </div>
+                           <div>
+                             <h4 className="font-bold text-lg dark:text-white leading-tight">{juice.name}</h4>
+                             <p className="text-xs text-brand-orange font-black mt-1">₹{juice.price}</p>
+                           </div>
+                        </div>
+                        <div className="flex items-center gap-5 bg-gray-50 dark:bg-neutral-900 p-2.5 rounded-2xl border border-gray-100 dark:border-white/5">
+                           <button onClick={() => handleToggleJuice(juice.id, -1)} className="p-2 hover:text-red-500 transition-colors"><Minus size={18} /></button>
+                           <span className="font-black text-xl w-6 text-center dark:text-white">{selectedJuices[juice.id] || 0}</span>
+                           <button onClick={() => handleToggleJuice(juice.id, 1)} className="p-2 hover:text-blue-500 transition-colors"><Plus size={18} /></button>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
                   <div className="p-10 border-t border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-neutral-950/50 backdrop-blur-md">
                     <Button onClick={() => setIsJuiceModalOpen(false)} className="w-full py-5 text-lg font-black uppercase tracking-widest gap-3 shadow-blue-500/10">

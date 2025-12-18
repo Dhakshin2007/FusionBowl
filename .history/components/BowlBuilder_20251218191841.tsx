@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, Send, ShoppingBag, GlassWater, Trash2, X, ChevronRight, ChevronLeft, Sparkles, Wand2, RefreshCw, Check, Utensils, Info, AlertCircle } from 'lucide-react';
-import { INGREDIENTS, PACKS, PLATTER_CATEGORIES, JuiceIngredient } from '../constants';
+import { INGREDIENTS, PACKS, PLATTER_CATEGORIES, INGREDIENTS } from '../constants';
 import { Ingredient, SectionId } from '../types';
 import Button from './Button';
 import { analyzeBowlNutrition } from '../services/geminiService';

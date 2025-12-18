@@ -70,7 +70,7 @@ const BowlBuilder: React.FC = () => {
       const [id, size] = key.split(':');
       const juice = INGREDIENTS.find(i => i.id === id) as JuiceIngredient;
       const price = juicePriceMap(juice, size);
-      return acc + (price * (qty as number));
+      return acc + (price * qty);
     }, 0);
     return bowlPrice + juicePriceTotal;
   }, [activePackData, selectedJuices]);
@@ -109,7 +109,7 @@ const BowlBuilder: React.FC = () => {
         const [id, size] = key.split(':');
         const juice = INGREDIENTS.find(i => i.id === id) as JuiceIngredient;
         const price = juicePriceMap(juice, size);
-        message += `- ${juice?.name} (${size}) x${qty} (₹${price * (qty as number)})\n`;
+        message += `- ${juice?.name} (${size}) x${qty} (₹${price * qty})\n`;
       });
     }
 

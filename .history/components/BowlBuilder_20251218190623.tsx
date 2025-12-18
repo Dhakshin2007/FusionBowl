@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, Send, ShoppingBag, GlassWater, Trash2, X, ChevronRight, ChevronLeft, Sparkles, Wand2, RefreshCw, Check, Utensils, Info, AlertCircle } from 'lucide-react';
-import { INGREDIENTS, PACKS, PLATTER_CATEGORIES, JuiceIngredient } from '../constants';
+import { INGREDIENTS, PACKS, PLATTER_CATEGORIES } from '../constants';
 import { Ingredient, SectionId } from '../types';
 import Button from './Button';
 import { analyzeBowlNutrition } from '../services/geminiService';
@@ -21,7 +21,6 @@ const BowlBuilder: React.FC = () => {
 
   const activePackData = selectedPack ? PACKS[selectedPack] : null;
   const currentCategory = activePackData ? PLATTER_CATEGORIES[activePackData.categories[currentCategoryIndex]] : null;
-  const currentCategoryWeight = activePackData && currentCategory ? (activePackData.weights as any)[currentCategory.id] : '';
 
   const handleSelectPack = (packId: 'classic' | 'prime') => {
     setSelectedPack(packId);
@@ -59,18 +58,18 @@ const BowlBuilder: React.FC = () => {
     });
   };
 
-  const juicePriceMap = (juice: JuiceIngredient | undefined, size: string) => {
-    if (!juice) return 0;
-    return size === 'Shot' ? juice.shotPrice : juice.regularPrice;
+  const juicePriceMap = (basePrice: number, size: string) => {
+    return size === 'Shot' ? Math.ceil(basePrice * 0.5) : basePrice;
   };
 
   const totalPrice = useMemo(() => {
     let bowlPrice = activePackData ? activePackData.price : 0;
     let juicePriceTotal = Object.entries(selectedJuices).reduce((acc, [key, qty]) => {
       const [id, size] = key.split(':');
-      const juice = INGREDIENTS.find(i => i.id === id) as JuiceIngredient;
-      const price = juicePriceMap(juice, size);
-      return acc + (price * (qty as number));
+      const juice = INGREDIENTS.find(i => i.id === id);
+      if (!juice) return acc;
+      const price = juicePriceMap(juice.price, size);
+      return acc + (price * qty);
     }, 0);
     return bowlPrice + juicePriceTotal;
   }, [activePackData, selectedJuices]);
@@ -98,8 +97,7 @@ const BowlBuilder: React.FC = () => {
       message += `\n*A) Fruit Platter (${activePackData?.name})* (₹${activePackData?.price}):\n`;
       activePackData?.categories.forEach(catId => {
         const cat = PLATTER_CATEGORIES[catId];
-        const weight = (activePackData.weights as any)[catId];
-        message += `- ${cat.name} (${weight}): ${selections[catId]}\n`;
+        message += `- ${cat.name}: ${selections[catId]}\n`;
       });
     }
 
@@ -107,9 +105,9 @@ const BowlBuilder: React.FC = () => {
       message += `\n*B) Cold Pressed Juices*:\n`;
       Object.entries(selectedJuices).forEach(([key, qty]) => {
         const [id, size] = key.split(':');
-        const juice = INGREDIENTS.find(i => i.id === id) as JuiceIngredient;
-        const price = juicePriceMap(juice, size);
-        message += `- ${juice?.name} (${size}) x${qty} (₹${price * (qty as number)})\n`;
+        const juice = INGREDIENTS.find(i => i.id === id);
+        const price = juicePriceMap(juice?.price || 0, size);
+        message += `- ${juice?.name} (${size}) x${qty} (₹${price * (qty})\n`;
       });
     }
 
@@ -123,7 +121,7 @@ const BowlBuilder: React.FC = () => {
     if (!selectedPack) return;
     setIsAnalyzing(true);
     const mockIngredients: Ingredient[] = Object.values(selections).map(name => ({
-      id: name as string, name: name as string, category: 'fruit', price: 0, calories: 50, color: 'bg-white', emoji: ''
+      id: name, name, category: 'fruit', price: 0, calories: 50, color: 'bg-white', emoji: ''
     }));
     const result = await analyzeBowlNutrition(mockIngredients);
     setAiAnalysis(result);
@@ -277,14 +275,10 @@ const BowlBuilder: React.FC = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {activePackData?.categories.map(catId => {
                           const sel = selections[catId];
-                          const weight = (activePackData.weights as any)[catId];
                           return (
                             <div key={catId} className={`p-4 rounded-2xl flex justify-between items-center border transition-all ${sel ? 'bg-brand-orange/5 border-brand-orange/20 shadow-sm' : 'bg-gray-50 dark:bg-neutral-800/30 border-transparent'}`}>
                               <div className="flex flex-col">
-                                 <div className="flex items-center gap-2">
-                                    <span className="text-[9px] font-black text-gray-400 uppercase tracking-wider mb-0.5">{PLATTER_CATEGORIES[catId].name}</span>
-                                    <span className="text-[8px] font-black text-brand-orange/60">{weight}</span>
-                                 </div>
+                                 <span className="text-[9px] font-black text-gray-400 uppercase tracking-wider mb-0.5">{PLATTER_CATEGORIES[catId].name}</span>
                                  <span className={`text-xs font-bold truncate max-w-[120px] ${sel ? 'text-brand-orange' : 'text-gray-400 italic'}`}>{sel || 'Pending...'}</span>
                               </div>
                               {sel && (
@@ -311,7 +305,7 @@ const BowlBuilder: React.FC = () => {
                       <div className="grid grid-cols-1 gap-2">
                         {Object.entries(selectedJuices).map(([key, qty]) => {
                           const [id, size] = key.split(':');
-                          const juice = INGREDIENTS.find(j => j.id === id) as JuiceIngredient;
+                          const juice = INGREDIENTS.find(j => j.id === id);
                           return (
                             <div key={key} className="flex justify-between items-center p-3.5 bg-blue-50/50 dark:bg-blue-900/5 rounded-2xl border border-blue-100/50 dark:border-blue-900/20">
                                <div className="flex items-center gap-3">
@@ -344,10 +338,7 @@ const BowlBuilder: React.FC = () => {
                  >
                     <div className="flex justify-between items-end mb-10">
                       <div>
-                        <div className="flex items-center gap-2 mb-3">
-                           <span className="text-[10px] font-black text-brand-orange uppercase tracking-[0.2em] block">Section {currentCategoryIndex + 1}: {currentCategory.name}</span>
-                           <span className="px-2 py-0.5 rounded-full bg-brand-orange/10 text-brand-orange text-[9px] font-black tracking-widest">{currentCategoryWeight}</span>
-                        </div>
+                        <span className="text-[10px] font-black text-brand-orange uppercase tracking-[0.2em] mb-3 block">Section {currentCategoryIndex + 1}: {currentCategory.name}</span>
                         <h3 className="text-3xl font-serif font-bold dark:text-white leading-tight">{currentCategory.teluguName}</h3>
                       </div>
                       <div className="flex gap-2">
@@ -487,7 +478,7 @@ const BowlBuilder: React.FC = () => {
                   <div className="flex-grow overflow-y-auto p-8 md:p-10 custom-scrollbar space-y-4">
                     {INGREDIENTS.filter(i => i.category === 'shake-item').map(juice => {
                       const qty = selectedJuices[`${juice.id}:${activeJuiceSize}`] || 0;
-                      const currentPrice = juicePriceMap(juice as JuiceIngredient, activeJuiceSize);
+                      const currentPrice = juicePriceMap(juice.price, activeJuiceSize);
                       return (
                         <motion.div 
                           key={juice.id} layout

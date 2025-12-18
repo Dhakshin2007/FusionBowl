@@ -1,23 +1,18 @@
 import { Ingredient, Service, FAQItem } from './types';
 import { Truck, Utensils, CalendarHeart, Leaf, Star, Sparkles, Box, ChefHat } from 'lucide-react';
 
-export interface JuiceIngredient extends Ingredient {
-  shotPrice: number;
-  regularPrice: number;
-}
-
-export const INGREDIENTS: (Ingredient | JuiceIngredient)[] = [
+export const INGREDIENTS: Ingredient[] = [
   // Cold Pressed Juices (category: shake-item)
-  { id: 'juice-orange', name: 'Orange (Vitamin C Burst)', category: 'shake-item', price: 80, shotPrice: 35, regularPrice: 80, calories: 110, color: 'bg-orange-500', emoji: '🍊' },
-  { id: 'juice-watermelon', name: 'Watermelon (Just Watermelon)', category: 'shake-item', price: 80, shotPrice: 40, regularPrice: 80, calories: 90, color: 'bg-red-400', emoji: '🍉' },
-  { id: 'juice-beetroot', name: 'Beetroot (Red-Revive)', category: 'shake-item', price: 80, shotPrice: 35, regularPrice: 80, calories: 80, color: 'bg-pink-800', emoji: '🟣' },
-  { id: 'juice-mango', name: 'Mango (Sip of Golden Summer)', category: 'shake-item', price: 90, shotPrice: 40, regularPrice: 90, calories: 150, color: 'bg-yellow-500', emoji: '🥭' },
-  { id: 'juice-pineapple', name: 'Pineapple (Pineapple Bliss)', category: 'shake-item', price: 100, shotPrice: 45, regularPrice: 100, calories: 120, color: 'bg-yellow-400', emoji: '🍍' },
-  { id: 'juice-muskmelon', name: 'Muskmelon (Golden Melon)', category: 'shake-item', price: 100, shotPrice: 45, regularPrice: 100, calories: 100, color: 'bg-orange-200', emoji: '🍈' },
-  { id: 'juice-carrot', name: 'Carrot (Carrot Powerhouse)', category: 'shake-item', price: 110, shotPrice: 45, regularPrice: 110, calories: 95, color: 'bg-orange-600', emoji: '🥕' },
-  { id: 'juice-abc', name: 'ABC (ABC Goodness)', category: 'shake-item', price: 130, shotPrice: 50, regularPrice: 130, calories: 110, color: 'bg-red-700', emoji: '🥤' },
-  { id: 'juice-apple', name: 'Apple (Apple-Solutely Healthy)', category: 'shake-item', price: 150, shotPrice: 60, regularPrice: 150, calories: 120, color: 'bg-red-500', emoji: '🍎' },
-  { id: 'juice-pomegranate', name: 'Pomegranate (The Pomegranate Punch)', category: 'shake-item', price: 150, shotPrice: 60, regularPrice: 150, calories: 140, color: 'bg-red-800', emoji: '🔴' },
+  { id: 'juice-orange', name: 'Orange (Vitamin C Burst)', category: 'shake-item', price: 80, calories: 110, color: 'bg-orange-500', emoji: '🍊' },
+  { id: 'juice-watermelon', name: 'Watermelon (Just Watermelon)', category: 'shake-item', price: 80, calories: 90, color: 'bg-red-400', emoji: '🍉' },
+  { id: 'juice-beetroot', name: 'Beetroot (Red-Revive)', category: 'shake-item', price: 80, calories: 80, color: 'bg-pink-800', emoji: '🟣' },
+  { id: 'juice-mango', name: 'Mango (Sip of Golden Summer)', category: 'shake-item', price: 90, calories: 150, color: 'bg-yellow-500', emoji: '🥭' },
+  { id: 'juice-pineapple', name: 'Pineapple (Pineapple Bliss)', category: 'shake-item', price: 100, calories: 120, color: 'bg-yellow-400', emoji: '🍍' },
+  { id: 'juice-muskmelon', name: 'Muskmelon (Golden Melon)', category: 'shake-item', price: 100, calories: 100, color: 'bg-orange-200', emoji: '🍈' },
+  { id: 'juice-carrot', name: 'Carrot (Carrot Powerhouse)', category: 'shake-item', price: 110, calories: 95, color: 'bg-orange-600', emoji: '🥕' },
+  { id: 'juice-abc', name: 'ABC (ABC Goodness)', category: 'shake-item', price: 130, calories: 110, color: 'bg-red-700', emoji: '🥤' },
+  { id: 'juice-apple', name: 'Apple (Apple-Solutely Healthy)', category: 'shake-item', price: 130, calories: 120, color: 'bg-red-500', emoji: '🍎' },
+  { id: 'juice-pomegranate', name: 'Pomegranate (The Pomegranate Punch)', category: 'shake-item', price: 150, calories: 140, color: 'bg-red-800', emoji: '🔴' },
 ];
 
 export interface PlatterCategory {
@@ -84,31 +79,14 @@ export const PACKS = {
     name: 'Classic Platter',
     sections: 5,
     price: 135,
-    categories: ['citrus', 'hydrating', 'fiber_rich', 'digestive', 'protein'],
-    weights: {
-      citrus: '180 Gm',
-      hydrating: '400 Gm',
-      fiber_rich: '140 Gm',
-      digestive: '180 Gm',
-      protein: '1 Whole Egg / 100 Gm Sprouts'
-    }
+    categories: ['citrus', 'hydrating', 'fiber_rich', 'digestive', 'protein']
   },
   prime: {
     id: 'prime',
     name: 'Prime Platter',
     sections: 8,
     price: 249,
-    categories: ['fiber_rich', 'digestive', 'citrus', 'hydrating', 'protein', 'nourish', 'dry_fruits', 'exotic'],
-    weights: {
-      citrus: '135 Gm',
-      hydrating: '350 Gm',
-      fiber_rich: '100 Gm',
-      digestive: '250 Gm',
-      protein: '1 Whole Egg / 100 Gm Sprouts',
-      nourish: '100 Gm',
-      dry_fruits: '50 Gm',
-      exotic: '100 Gm'
-    }
+    categories: ['fiber_rich', 'digestive', 'citrus', 'hydrating', 'protein', 'nourish', 'dry_fruits', 'exotic']
   }
 };
 

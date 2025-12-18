@@ -70,7 +70,7 @@ const BowlBuilder: React.FC = () => {
       const [id, size] = key.split(':');
       const juice = INGREDIENTS.find(i => i.id === id) as JuiceIngredient;
       const price = juicePriceMap(juice, size);
-      return acc + (price * (qty as number));
+      return acc + (price * qty);
     }, 0);
     return bowlPrice + juicePriceTotal;
   }, [activePackData, selectedJuices]);
@@ -109,7 +109,7 @@ const BowlBuilder: React.FC = () => {
         const [id, size] = key.split(':');
         const juice = INGREDIENTS.find(i => i.id === id) as JuiceIngredient;
         const price = juicePriceMap(juice, size);
-        message += `- ${juice?.name} (${size}) x${qty} (₹${price * (qty as number)})\n`;
+        message += `- ${juice?.name} (${size}) x${qty} (₹${price * qty})\n`;
       });
     }
 
@@ -123,7 +123,7 @@ const BowlBuilder: React.FC = () => {
     if (!selectedPack) return;
     setIsAnalyzing(true);
     const mockIngredients: Ingredient[] = Object.values(selections).map(name => ({
-      id: name as string, name: name as string, category: 'fruit', price: 0, calories: 50, color: 'bg-white', emoji: ''
+      id: name, name, category: 'fruit', price: 0, calories: 50, color: 'bg-white', emoji: ''
     }));
     const result = await analyzeBowlNutrition(mockIngredients);
     setAiAnalysis(result);
