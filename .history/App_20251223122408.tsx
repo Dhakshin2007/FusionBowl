@@ -367,7 +367,7 @@ const App: React.FC = () => {
       />
 
       <CookieBanner onOpenPolicy={() => setActiveLegalDoc('cookies')} />
-{/* <FloatingWhatsApp />       */}
+      <FloatingWhatsApp />
     </div>
   );
 };
