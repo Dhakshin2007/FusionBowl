@@ -9,7 +9,7 @@ import CookieBanner from './components/CookieBanner';
 import FAQ from './components/FAQ';
 import Cursor from './components/Cursor';
 import ShopPage from './components/ShopPage';
-import FloatingWhatsApp from './components/FloatingWhatsapp';
+import FloatingWhatsApp from './components/FloatingWhatsApp';
 import { SERVICES, TESTIMONIALS } from './constants';
 import { SectionId } from './types';
 import Button from './components/Button';
